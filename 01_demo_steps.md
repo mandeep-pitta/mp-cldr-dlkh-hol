@@ -20,32 +20,32 @@ The following describes the steps to take and how to deliver this demo.
 
 # Prior to Demo - SQL that will be run in Hive VW HUE<a id="prior-to-demo---sql-that-will-be-run-in-hive-vw-hue"></a>
 
-- Copy & paste the following to the HUE Editor for the Hive VW named **\<user-id>-iceberg-hive-vw**.  It will be Executed later
+- Copy & paste the following to the HUE Editor for the Hive VW named **\<prefix>-iceberg-hive-vw**.  It will be Executed later
 
 ```
     -- Migrate Table Feature
-    DESCRIBE FORMATTED ${user_id}_airlines.planes;
+    DESCRIBE FORMATTED ${prefix}_airlines.planes;
 
-    ALTER TABLE ${user_id}_airlines.planes
+    ALTER TABLE ${prefix}_airlines.planes
     SET TBLPROPERTIES ('storage_handler'='org.apache.iceberg.mr.hive.HiveIcebergStorageHandler');
 
-    DESCRIBE FORMATTED ${user_id}_airlines.planes;
+    DESCRIBE FORMATTED ${prefix}_airlines.planes;
 
     --
     -- CTAS to create Iceberg Table format
-    drop table if exists ${user_id}_airlines.airports;
+    drop table if exists ${prefix}_airlines.airports;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.airports
+    CREATE EXTERNAL TABLE ${prefix}_airlines.airports
     STORED BY ICEBERG AS
-      SELECT * FROM ${user_id}_airlines_csv.airports_csv;
+      SELECT * FROM ${prefix}_airlines_csv.airports_csv;
 
-    DESCRIBE FORMATTED ${user_id}_airlines.airports;
+    DESCRIBE FORMATTED ${prefix}_airlines.airports;
 
     --
     -- Create Partitioned Iceberg Table
-    drop table if exists ${user_id}_airlines.flights;
+    drop table if exists ${prefix}_airlines.flights;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.flights (
+    CREATE EXTERNAL TABLE ${prefix}_airlines.flights (
      month int, dayofmonth int, 
      dayofweek int, deptime int, crsdeptime int, arrtime int, 
      crsarrtime int, uniquecarrier string, flightnum int, tailnum string, 
@@ -59,32 +59,32 @@ The following describes the steps to take and how to deliver this demo.
     STORED BY ICEBERG 
     STORED AS PARQUET;
 
-    SHOW CREATE TABLE ${user_id}_airlines.flights;
+    SHOW CREATE TABLE ${prefix}_airlines.flights;
 
     --
     -- Load Data into Partitioned Iceberg Table
-    INSERT INTO ${user_id}_airlines.flights
-     SELECT * FROM ${user_id}_airlines_csv.flights_csv
+    INSERT INTO ${prefix}_airlines.flights
+     SELECT * FROM ${prefix}_airlines_csv.flights_csv
      WHERE year <= 2006;
 
     --
     -- Query Table
     SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
     GROUP BY year
     ORDER BY year desc;
 
     --
     -- Partition Evolution
-    ALTER TABLE ${user_id}_airlines.flights
+    ALTER TABLE ${prefix}_airlines.flights
     SET PARTITION spec ( year, month );
 
-    SHOW CREATE TABLE ${user_id}_airlines.flights;
+    SHOW CREATE TABLE ${prefix}_airlines.flights;
 
     --
     -- Load Data into Iceberg Table using NEW Partition
-    INSERT INTO ${user_id}_airlines.flights
-     SELECT * FROM ${user_id}_airlines_csv.flights_csv
+    INSERT INTO ${prefix}_airlines.flights
+     SELECT * FROM ${prefix}_airlines_csv.flights_csv
      WHERE year = 2007;
 
     --
@@ -97,44 +97,44 @@ The following describes the steps to take and how to deliver this demo.
 
     -- 2. Check data that was loaded - will see year=9999 (invalid)
     SELECT year, count(*) 
-    FROM ${user_id}_airlines_maint.flights
+    FROM ${prefix}_airlines_maint.flights
     GROUP BY year
     ORDER BY year desc;
 
     -- See Snapshot to determine when this data was loaded
-    SELECT * FROM ${user_id}_airlines_maint.flights.snapshots;
+    SELECT * FROM ${prefix}_airlines_maint.flights.snapshots;
 
     -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
     --      Using the previous Snapshot will see that this is where the records were loaded (Rollback needed)
     SELECT year, count(*) 
-    FROM ${user_id}_airlines_maint.flights
+    FROM ${prefix}_airlines_maint.flights
       FOR SYSTEM_VERSION AS OF ${snapshot_id}
     GROUP BY year
     ORDER BY year desc;
 
     -- ROLLBACK TO LAST KNOWN "GOOD" STATE FOR THE TABLE
-    ALTER TABLE ${user_id}_airlines_maint.flights EXECUTE ROLLBACK(${snapshot_id});
+    ALTER TABLE ${prefix}_airlines_maint.flights EXECUTE ROLLBACK(${snapshot_id});
 
     -- Check data has been restored to last known "GOOD" state - data to year 2006
     SELECT year, count(*) 
-    FROM ${user_id}_airlines_maint.flights
+    FROM ${prefix}_airlines_maint.flights
     GROUP BY year
     ORDER BY year desc;
 
     -- 3. EXPIRE SNAPSHOT(S)
-    SELECT * FROM ${user_id}_airlines_maint.flights.snapshots;
+    SELECT * FROM ${prefix}_airlines_maint.flights.snapshots;
 
     -- Expire Snapshots up to the specified timestamp
     --      BE CAREFUL: Once you run this you will not be able to Time Travel for any Snapshots that you Expire
-    ALTER TABLE ${user_id}_airlines_maint.flights EXECUTE expire_snapshots('${create_ts}');
+    ALTER TABLE ${prefix}_airlines_maint.flights EXECUTE expire_snapshots('${create_ts}');
 
     -- Ensure Snapshots have been removed
-    SELECT * FROM ${user_id}_airlines_maint.flights.snapshots;
+    SELECT * FROM ${prefix}_airlines_maint.flights.snapshots;
 ```
 
 # Prior to Demo - SQL that will be run in Impala VW HUE<a id="prior-to-demo---sql-that-will-be-run-in-impala-vw-hue"></a>
 
-- In HUE Editor for the Impala VW named **\<user-id>-iceberg-impala-vw**, make sure to select the IMPALA Editor (for now do not use Unified Analytics, hasn’t been test for this Runbook)
+- In HUE Editor for the Impala VW named **\<prefix>-iceberg-impala-vw**, make sure to select the IMPALA Editor (for now do not use Unified Analytics, hasn’t been test for this Runbook)
 
   - To switch to the Impala Editor - on the left navigation click on the ![](../images/43.png) and select ![](../images/44.png)
 
@@ -153,7 +153,7 @@ After that you will see “Impala” in the gray bar above the SQL Editor.
     --
     -- QUERY TO SEE DATA LOADED FROM CDE
     SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
     GROUP BY year
     ORDER BY year desc;
 
@@ -162,48 +162,48 @@ After that you will see “Impala” in the gray bar above the SQL Editor.
 
     -- RUN EXPLAIN PLAN ON THIS QUERY
     SELECT year, month, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
     WHERE year = 2006 AND month = 12
     GROUP BY year, month
     ORDER BY year desc, month asc;
 
     -- RUN EXPLAIN PLAN ON THIS QUERY; AND COMPARE RESULTS
     SELECT year, month, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
     WHERE year = 2007 AND month = 12
     GROUP BY year, month
     ORDER BY year desc, month asc;
 
     --
     -- SELECT SNAPSHOSTS THAT HAVE BEEN CREATED
-    DESCRIBE HISTORY ${user_id}_airlines.flights;
+    DESCRIBE HISTORY ${prefix}_airlines.flights;
 
     -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
     SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
       FOR SYSTEM_TIME AS OF '${create_ts}'
     GROUP BY year
     ORDER BY year desc;
 
     -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
     SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
+    FROM ${prefix}_airlines.flights
       FOR SYSTEM_VERSION AS OF ${snapshot_id}
     GROUP BY year
     ORDER BY year desc;
     --
     -- [optional] SINGLE QUERY USING ICEBERG & HIVE TABLE FORMAT
     --            Uses CDV Dashboard, could also just query in HUE
-    -- DESCRIBE FORMATTED ${user_id}_airlines.flights;
-    DESCRIBE FORMATTED ${user_id}_airlines.unique_tickets;
+    -- DESCRIBE FORMATTED ${prefix}_airlines.flights;
+    DESCRIBE FORMATTED ${prefix}_airlines.unique_tickets;
 
     -- [optional] Query combining Hive Table Format (unique_tickets) and Iceberg Table Format (flights)
     SELECT 
     t.leg1origin,
     f.dest,
     count(*) as num_passengers
-    FROM ${user_id}_airlines.unique_tickets t
-    LEFT OUTER JOIN ${user_id}_airlines.flights f ON
+    FROM ${prefix}_airlines.unique_tickets t
+    LEFT OUTER JOIN ${prefix}_airlines.flights f ON
       t.leg1origin = f.origin
       AND t.leg1dest = f.dest
       AND t.leg1flightnum = f.flightnum
@@ -216,6 +216,6 @@ After that you will see “Impala” in the gray bar above the SQL Editor.
     --     1. Run query to see Tailnum in plain text
     --     2. Ranger - enable policy
     --     3. Run query again to see Tailnum is Hashed
-    SELECT * FROM ${user_id}_airlines.planes;
+    SELECT * FROM ${prefix}_airlines.planes;
 ```
 

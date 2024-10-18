@@ -33,7 +33,7 @@ Browse each of the folder to make sure the CSV file is in the folders correctly 
          Size: x-small
          Concurrency Autoscaling > Executors: make sure the max is > (# Attendees * 2) Leave remaining options as default (these wcan be changed but for this Runbook there are no specific settings that are required)
    2. Create an Impala VW
-      * Name: `<user-id>-iceberg-impala-vw`
+      * Name: `<prefix>-iceberg-impala-vw`
       * Type: Impala
       * Database Catalog: select the Default DBC for the Environment you are using
       * Size: x-small

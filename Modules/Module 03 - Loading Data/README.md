@@ -1,4 +1,4 @@
-# MODULE 03 - Loading Data
+# Module 03 - Loading Data
 
 ## Overview
 
@@ -37,7 +37,7 @@ This method leverages Spark SQL within a Spark session to load data into Iceberg
 
 The final method involves using Spark DataFrames to load data into Iceberg tables programmatically. This method provides flexibility and control, particularly when working with complex data pipelines.
 
-### Value Proposition
+### Key Takeaways
 
 By mastering these data-loading techniques, you'll ensure that your Iceberg tables are populated with accurate, consistent, and well-organized data. This foundation enables you to fully leverage Iceberg's advanced features, such as time travel, partition evolution, and schema management, leading to more efficient data processing and querying.
 

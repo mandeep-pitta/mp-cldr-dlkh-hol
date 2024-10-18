@@ -1,31 +1,44 @@
-# Module 10 - Visualizations
+# Module 11 - Visualizations
 
-## Visualizations with Iceberg and Hive Tables
+## Overview
 
-This module explores using Apache Iceberg tables alongside existing Hive tables for data visualization in Cloudera Data Visualization (CDV).
+In this module, we will explore how to create visualizations using **Apache Iceberg** and **Hive** tables in **Cloudera Data Visualization (CDV)**. This module showcases how to combine Iceberg tables with existing Hive tables in CDV, allowing for gradual table migrations while maintaining analytics capabilities.
 
-**Combining Iceberg and Hive Tables:**
+### Key Concepts
 
-The example showcases an Airline Dashboard that leverages both Iceberg tables (flights, planes, airports) and a Hive table (unique\_tickets) from the same database. This highlights that:
+#### 1. Combining Iceberg and Hive Tables
 
-- You can gradually migrate tables to Iceberg format when it makes sense for your specific needs.
-- CDV can effectively work with mixed Iceberg and Hive table formats within a single dashboard.
+- Learn how to create dashboards that integrate both Iceberg and Hive tables, supporting a phased approach to migrating tables to Iceberg.
 
-**Exploring the Data Model:**
+#### 2. Airline Dashboard Example
 
-The guide instructs you to navigate the CDV interface to explore the "Airlines Lakehouse" dataset and its data model. This helps you identify the sources (Iceberg vs. Hive) for the tables used in the Airline Dashboard.
+- Explore the **Airline Dashboard** in CDV, which uses Iceberg tables (flights, planes, airports) and a Hive table (unique\_tickets) within a single visualization.
 
-**Verifying Table Formats:**
+#### 3. Exploring Data Models
 
-While you've already encountered Iceberg tables in previous modules, one table (unique\_tickets) remains in Hive format. You can confirm this using a DESCRIBE statement in Impala.
+- Understand how to navigate the data model in CDV to identify the source table formats (Iceberg or Hive).
 
-**Optional: Single Query with Mixed Formats:**
+#### 4. Verifying Table Formats
 
-The module mentions the possibility of using CDV dashboards to create visualizations that combine data from Iceberg and Hive tables within a single query. An example DESCRIBE statement is provided for illustrative purposes.
+- Use the `DESCRIBE FORMATTED` query in Impala to confirm whether a table is in Iceberg or Hive format.
 
-Remember to replace `${user_id}` with your actual user ID throughout the process.
+### Methods Covered in This Module
 
-To begin, select the sub-module below:
+#### 1. Visualizing Mixed Table Formats
+
+Learn how to use CDV to create visualizations that combine Iceberg and Hive tables. The example focuses on the Airline Dashboard, showing how to work with mixed table formats.
+
+#### 2. Verifying Table Formats Using Impala
+
+Verify the formats of Iceberg and Hive tables using the `DESCRIBE FORMATTED` query in Impala.
+
+### Key Takeaways
+
+- CDV allows for the creation of dashboards that combine Iceberg and Hive tables, enabling phased migrations.
+- You can easily verify the table formats (Iceberg or Hive) through Impala queries.
+- Iceberg provides flexibility in data management without needing to convert all tables at once, allowing for gradual adoption.
+
+> **Note**: Replace `${prefix}` with your user ID throughout the process.
 
 ## Submodules
 

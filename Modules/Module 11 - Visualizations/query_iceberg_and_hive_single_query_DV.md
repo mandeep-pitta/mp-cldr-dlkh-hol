@@ -1,64 +1,55 @@
-# Iceberg Table Format Table(s) joined with Hive Table Format Table(s) using Data Viz
+# Visualizing Iceberg and Hive Tables in CDV
 
-It is NOT a requirement to convert all tables to Iceberg Table format.  In fact, this can be something that you move to over time.
+## Overview
 
-**DataViz - Explore the “Airline Dashboard” Dashboard**
+In this submodule, we will explore how to use **Cloudera Data Visualization (CDV)** to create visualizations that combine Iceberg and Hive tables within the same dashboard. This flexibility allows you to migrate tables to Iceberg over time, while still maintaining the ability to analyze and visualize data across both table formats.
 
-- Click on VISUALS tab
+## Step-by-Step Guide
 
-- Click on the Dashboard named “**Airline Dashboard**”
+### Step 1: Explore the "Airline Dashboard"
 
-![75.png](../../images/75.png)
+1. Open the **VISUALS** tab in CDV.
+2. Select the **Airline Dashboard** to explore how the dashboard integrates Iceberg and Hive tables.
 
-- **VALUE**: combine Iceberg with Hive table formats, means you can convert to use Iceberg where it makes sense and also can migrate over time vs. having to migrate at the same time
+   ![75.png](../../images/75.png)
 
-  - This Dashboard uses the same **Iceberg** tables (flights, planes, airports) that you have been working on in the Airlines DW (database name “**\<user\_id>**\_airlines”) and combines this with an existing table in the same database, named “unique\_carrier” which is still in a Hive Table format.
+- **Value**: CDV allows you to combine Iceberg and Hive table formats in a single visualization, enabling gradual migration without disrupting analytics.
 
-* Let’s explore the Dataset to see the various tables that are part of this Data Model
+### Step 2: Explore the Data Model
 
-  - Click on the DATA tab, you will now have a Dataset named “Airlines Lakehouse”
+1. Click on the **DATA** tab and select the **Airlines Lakehouse** dataset.
+2. Navigate to the **Data Model** section to identify the source tables for the dashboard.
 
-![30.png](../../images/30.png)
+   ![30.png](../../images/30.png)
 
-- Click on the “Airlines Lakehouse” to open the Dataset
+3. Review the tables, including **unique_tickets** (Hive table) and **flights** (Iceberg table).
 
-  - On the left navigation menu select Data Model
+   ![31.png](../../images/31.png)
 
-  - Click on the ![31.png](../../images/31.png)button
+### Step 3: Verify Table Formats Using Impala
 
-    - Click on the “unique\_tickets” table, to find the source table
+1. To confirm table formats, execute the following `DESCRIBE` statements in Impala:
 
-      - Database: \<user\_id>\_airlines
-
-      - Table: unique\_tickets
-
-    - Click on the “flights” table, to find the source table
-
-      - Database: \<user\_id>\_airlines
-
-      - Table: unique\_tickets
-
-    - Instead of showing each table lets take a look at the table types
-
-* Execute the following in HUE for Impala VW
-
-  - Remember that we have already seen the following tables in Iceberg Table format
-
-    - flights (via Create Table in Iceberg format)
-
-    - planes (migrated via Alter Table utility)
-
-    - airports (CTAS to Iceberg table)
-
-  - So, let’s see about the Unique Tickets table.  We’ll see that this table is still in Hive Table Format - see SerDe Library = ParquetHiveSerDe (not the Iceberg SerDe).  So we have a Dashboard that is combining both table formats in a single Dashboard
-
-```
+    ``` sql
+    --  
+    -- DESCRIBE Iceberg and Hive tables  
+    DESCRIBE FORMATTED ${prefix}_airlines.flights;  
+    DESCRIBE FORMATTED ${prefix}_airlines.unique_tickets;  
     --
-    -- [optional] SINGLE QUERY USING ICEBERG & HIVE TABLE FORMAT
-    --            Uses CDV Dashboard, could also just query in HUE
-    DESCRIBE FORMATTED ${user_id}_airlines.flights;
-    DESCRIBE FORMATTED ${user_id}_airlines.unique_tickets;
-```
+    ```
 
-![65.png](../../images/65.png)
+   - This will reveal the format of each table (Iceberg or Hive).
 
+   ![65.png](../../images/65.png)
+
+## Summary
+
+In this submodule, you've learned how to explore visualizations in CDV that combine both Iceberg and Hive tables. You've also learned how to verify the table formats using Impala.
+
+## Next Steps
+
+To continue working with Iceberg and Hive tables, you may want to explore:
+
+- **[Module 05 - Loading Data for Multi-function Analytics](Module%2005%20-%20Loading%20Data/README.md)**: Explore advanced techniques for loading data into Iceberg tables.
+
+- **[Module 06 - Time Travel](Module%2006%20-%20Time%20Travel/README.md)**: Leverage Iceberg’s time travel capabilities to query historical data.

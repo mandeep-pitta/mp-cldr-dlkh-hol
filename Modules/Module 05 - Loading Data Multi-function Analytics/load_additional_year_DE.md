@@ -1,10 +1,27 @@
-# CDE - Multi-function Analytics
+# Load an Additional Year of Data Using Spark SQL
 
-Since Iceberg is Engine Agnostic, we are not locked into using only one engine to interact with Iceberg, in this part of the demo we will use Spark in CDE to add additional data to the Flights table we created in the previous demo steps using CDW (HUE Hive).
+## Overview
 
-**CDE Insert data into Iceberg Table feature**
+This submodule demonstrates how to use Apache Spark in Cloudera Data Engineering (CDE) to load an additional year of data (2008) into an Iceberg table. You will execute a Python script that reads data from a CSV file stored in AWS S3, filters the data for a specific year, and inserts it into the existing Iceberg table.
 
-- Open a Text Editor or IDE (I used VS Code from Microsoft).  Copy and paste the following code replacing \<user-id> with your user id.
+The goal is to showcase Iceberg's multi-engine capabilities, specifically highlighting Spark for data manipulation and Impala for querying the results in Cloudera Data Warehouse (CDW/Hue).
+
+## Prerequisites
+
+Before running this submodule, ensure that:
+
+- You have access to a Cloudera Data Engineering (CDE) virtual cluster with Spark capabilities.
+- You have set up Kerberos credentials to access AWS S3 cloud storage.
+- The Iceberg table (`flights`) was created in earlier steps using CDW/Hue (Hive).
+- You have installed an IDE or text editor (e.g., VS Code) to modify the Python script.
+
+## Step-by-Step Guide
+
+### Step 1: Prepare the Spark Script
+
+Open a text editor (e.g., VS Code) and create a Python script that will load data from AWS S3 into the Iceberg table.
+
+Copy the following code into your Python file, replacing `<prefix>` with your user ID.
 
 ```
 #****************************************************************************
@@ -28,50 +45,54 @@ spark = SparkSession.builder.appName('Ingest').getOrCreate()
 #
 #-----------------------------------------------------------------------------------
 print("JOB STARTED...")
-spark.sql("INSERT INTO <user-id>_airlines.flights SELECT * FROM <user-id>_airlines_csv.flights_csv WHERE year = 2008 ")
+spark.sql("INSERT INTO <prefix>_airlines.flights SELECT * FROM <prefix>_airlines_csv.flights_csv WHERE year = 2008 ")
 
 print("JOB COMPLETED.\n\n")
 ```
 
-- Save file as “IcebergAdd2008.py”, in a location that you remember
+Save the file as `IcebergAdd2008.py` in a location you can easily access.
 
-- In CDE, click on View Jobs for the Virtual Cluster named **\<user-id>-iceberg-vc**, replacing \<user-id> with your user id
+### Step 2: Create and Run the Spark Job in CDE
 
-- Create a new Job in CDE, using the following, replacing \<user-id> with your user id.  Once completed click on “Create and Run” button
+1. Navigate to the CDE console and click on **View Jobs** for your virtual cluster named **<prefix>-iceberg-vc**, replacing `<prefix>` with your user ID.
+2. Click **Create Job** and configure the following settings:
+   - **Job Type**: Spark 3.2.0
+   - **Name**: `<prefix>-IcebergAdd2008`
+   - **Application File**: Upload the `IcebergAdd2008.py` script you just saved.
+   - **Select Resource**: Create a new resource named `<prefix>-IcebergAdd2008`.
+   - **Kerberos Configuration**: Set `spark.kerberos.access.hadoopFileSystems = s3a://<cdp-bucket>`, replacing `<cdp-bucket>` with the correct bucket name.
+   
+3. Click **Create and Run** to execute the job.
 
-   - Job Type: Spark 3.2.0
-   - Name: **\<user-id>**-IcebergAdd2008 
-   - Application File: File
-   - Upload File: IcebergAdd2008.py (click on upload file, and browse to find your file)
-   - Select a Resource: (select) Create a Resource
+   ![Upload File (Python)](../../images/63.png)
 
-   - Resource Name: **\<user-id>**-IcebergAdd2008
+### Step 3: Monitor Job Execution
 
-Configurations - 
+1. Go to **Job Runs** in CDE and click on the job you just submitted.
+2. Review the logs and run history to confirm successful execution.
 
-   - spark.kerberos.access.hadoopFileSystems = s3a://**\<cdp-bucket>**
+   ![CDE Job Run](../../images/62.png)
 
-Select Spark 3.2.0
+### Step 4: Verify the Data in CDW/Hue
 
-Leave Advanced Options and Scheduling alone (default settings)
+Once the Spark job completes, verify that the data has been added to the Iceberg table using Impala in CDW/Hue.
 
-![62.png](../../images/62.png)            ![63.png](../../images/63.png)
+1. In CDW/Hue, execute the following query to check the record count for the year 2008:
+   ```
+   SELECT year, count(*)
+   FROM ${prefix}_airlines.flights
+   GROUP BY year
+   ORDER BY year desc;
+   ```
 
-                                                                                                                 Upload File (Python)
+2. You should see the records for the year 2008 along with data for the previous years.
 
-- In CDE, go to Job Runs, click on the ID for the row of the Job that you just ran.  Explore the Logs, the run history, etc. if you’d like to see more details.  As long as the Job runs successfully, you can continue on.
+   ![Query Results](../../images/64.png)
 
-**Query the updated data (in CDW HUE)**
+## Conclusion
 
-- Execute the following in HUE for Impala VW
+This submodule demonstrated how to use Spark in Cloudera Data Engineering to load data into an Iceberg table. You have successfully inserted data for an additional year (2008) and verified the results using CDW/Hue. This process highlights Iceberg’s multi-engine capabilities, enabling both Spark-based data manipulation and Impala querying for analysis.
 
-```
-    SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
-    GROUP BY year
-    ORDER BY year desc;
-```
+## Next Steps
 
-- In the Results, you should see Year 2008 and a number of records along with the data for our previous years that have been loaded
-
-![64.png](../../images/64.png)
+Continue exploring more advanced functionality with Iceberg and Spark, or return to the main module for additional exercises and insights.

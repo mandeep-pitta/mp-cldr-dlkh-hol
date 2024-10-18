@@ -10,7 +10,7 @@ Tags are named references to snapshots with their own independent lifecycle.  Yo
 
 ```
 SELECT *
-FROM ${user_id}_airlines.flights.HISTORY;
+FROM ${prefix}_airlines.flights.HISTORY;
 ```
 
 - In results you see various Snapshots that have been created.  From the results, copy the Snapshot ID for the first Snapshot.  This was the original data loaded into the table.
@@ -24,7 +24,7 @@ FROM ${user_id}_airlines.flights.HISTORY;
 
 ```
 -- CREATE TAG (for the tag_name do NOT use capital letters)
-ALTER TABLE ${user_id}_airlines.flights 
+ALTER TABLE ${prefix}_airlines.flights 
    CREATE TAG `${tag_name}` 
    FOR SYSTEM_VERSION AS OF ${snapshot_ID} 
    RETAIN 365 DAYS;
@@ -38,7 +38,7 @@ ALTER TABLE ${user_id}_airlines.flights
 
 ```
 -- SHOW ALL TAGS & BRANCHES
-SELECT * from ${user_id}_airlines.flights.REFS;
+SELECT * from ${prefix}_airlines.flights.REFS;
 ```
 
 - In results you see the Tag named **audit** and if looking at the retention column you can see that this Tag is retained for 365 days represented in milliseconds
@@ -50,7 +50,7 @@ SELECT * from ${user_id}_airlines.flights.REFS;
 ```
 -- Query tag to see data in the Tag
 SELECT *
-  FROM ${user_id}_airlines.flights.tag_${tag_name}
+  FROM ${prefix}_airlines.flights.tag_${tag_name}
 LIMIT 100;
 ```
 

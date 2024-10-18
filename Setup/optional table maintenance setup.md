@@ -18,7 +18,7 @@
 
 ## Setting up the Table Maintenance Database for the Demo<a id="setting-up-the-databases-for-the-demo"></a>
 
-- Execute the following in HUE using the Hive VW named **\<user-id>-iceberg-hive-vw**
+- Execute the following in HUE using the Hive VW named **\<prefix>-iceberg-hive-vw**
 
   - Copy & paste the SQL (`in gray`) below
 
@@ -28,12 +28,12 @@
 
 ```
 -- CREATE DATABASES
-CREATE DATABASE ${user_id}_airlines_maint;
+CREATE DATABASE ${prefix}_airlines_maint;
 
 -- [TABLE MAINTENANCE] CREATE FLIGHTS TABLE IN ICEBERG TABLE FORMAT STORED AS PARQUET
-drop table if exists ${user_id}_airlines_maint.flights;
+drop table if exists ${prefix}_airlines_maint.flights;
 
-CREATE TABLE ${user_id}_airlines_maint.flights (
+CREATE TABLE ${prefix}_airlines_maint.flights (
 month int, dayofmonth int,
 dayofweek int, deptime int, crsdeptime int, arrtime int,
 crsarrtime int, uniquecarrier string, flightnum int, tailnum string,

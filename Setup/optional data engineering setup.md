@@ -1,8 +1,8 @@
 ## CDE Setup
 
-- Enable a New CDE Service, replace \<user-id> with your user id
+- Enable a New CDE Service, replace \<prefix> with your user id
 
-  - Name: **\<user-id>**-iceberg-de
+  - Name: **\<prefix>**-iceberg-de
 
   - Workload Type: General - Small
 
@@ -10,9 +10,9 @@
 
 ![](../images/35.png)
 
-- Add a New Virtual Cluster, replace \<user-id> with your user id
+- Add a New Virtual Cluster, replace \<prefix> with your user id
 
-  - Name: **\<user-id>**-iceberg-vc
+  - Name: **\<prefix>**-iceberg-vc
 
   - Spark Version: Spark 3.2.0 \[required for Iceberg]
 

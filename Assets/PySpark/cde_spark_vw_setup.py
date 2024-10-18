@@ -1,9 +1,9 @@
-# VARIABLES - change "<user_id>" & "<cdp_env_bucket>"
-user_id = "<user_id>"
+# VARIABLES - change "<prefix>" & "<cdp_env_bucket>"
+prefix = "<prefix>"
 cdp_env_bucket = "s3a://<cdp_env_bucket>"
-csv_database_name = user_id + "_airlines_csv"
-odl_database_name = user_id + "_airlines"
-maint_database_name = user_id + "_airlines_maint"
+csv_database_name = prefix + "_airlines_csv"
+odl_database_name = prefix + "_airlines"
+maint_database_name = prefix + "_airlines_maint"
 
 
 # CREATE DATABASES

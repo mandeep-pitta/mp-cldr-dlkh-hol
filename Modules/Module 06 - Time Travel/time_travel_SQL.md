@@ -1,44 +1,66 @@
-# Time Travel
+# Time Travel Using SQL
 
-In the previous steps we have been loading data into the flights Iceberg table.  Each time we add (delete or update) data a Snapshot is captured.  This is important for many reasons but the main point of the Snapshot is to ensure eventual consistency and allow for multiple reads/writes concurrently (from various engines or the same engine).  In this Runbook you take advantage of one of the features, Time Travel.  We will use this to query data from a specific point in time, a good use case where this is important is regulatory compliance.
+## Overview
 
-**Time Travel feature**
+In the previous steps, we have been loading data into the `flights` Iceberg table. Each time we add, delete, or update data, a snapshot is captured. This ensures eventual consistency and allows for multiple reads/writes concurrently from various engines. In this submodule, we will leverage the **Time Travel** feature to query data from a specific point in time. A common use case for this feature is regulatory compliance.
 
-- In the next few steps execute the following in HUE for Impala VW
+## Step-by-Step Guide
+
+### Step 1: Execute Time Travel Queries
+
+In the following steps, execute these commands in Hue for Impala VW:
 
 ```
-    DESCRIBE HISTORY ${user_id}_airlines.flights;
+    DESCRIBE HISTORY ${prefix}_airlines.flights;
 
     -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
-    SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
-      FOR SYSTEM_TIME AS OF '${create_ts}'
+    SELECT year, count(*) 
+    FROM ${prefix}_airlines.flights
+      FOR SYSTEM_TIME AS OF '${create_ts}'
     GROUP BY year
     ORDER BY year desc;
 
-    -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
-    SELECT year, count(*) 
-    FROM ${user_id}_airlines.flights
-      FOR SYSTEM_VERSION AS OF ${snapshot_id}
+    -- SELECT DATA USING SNAPSHOT ID
+    SELECT year, count(*) 
+    FROM ${prefix}_airlines.flights
+      FOR SYSTEM_VERSION AS OF ${snapshot_id}
     GROUP BY year
     ORDER BY year desc;
 ```
 
-- Highlight and Execute the “DESCRIBE HISTORY” line.  This returns all of the available Snapshots for the flight Iceberg table.  There were 2 Snapshots automatically captured each time we loaded data
+### Step 2: Describe the History of the Iceberg Table
 
-![59.png](../../images/59.png)
+- Highlight and execute the `DESCRIBE HISTORY` line to return all available snapshots for the `flights` Iceberg table.
+- Each snapshot captures the table state at different times when data was added or updated.
 
-- In the create\_ts parameter box enter a date/time (this can be relative or specific timestamp) in the orange box under creation\_time, in this example I picked a time between the 2 snapshots of 2022-11-15 21:50:00
+	![Snapshot History](../../images/59.png)
 
-- In the snapshot\_id parameter box enter the number in the blue box under snapshot\_id, in this example it is 7116728088845144567
+### Step 3: Select a Snapshot Timestamp
 
-![60.png](../../images/60.png)
+- In the `create_ts` parameter box, enter a date/time (either relative or specific timestamp). For example, use `2022-11-15 21:50:00` to select a time between the two snapshots.
 
-- Highlight and Execute the Query with the “FOR SYSTEM\_TIME AS OF”.  You can use a specific timestamp or you can use a relative timestamp and Iceberg will take the Snapshot that was in effect as of that time specified
+### Step 4: Select a Snapshot ID
 
-![61.png](../../images/61.png)
+- In the `snapshot_id` parameter box, enter the snapshot ID number from the blue box under `snapshot_id`. In this example, it is `7116728088845144567`.
 
-- Highlight and Execute the Query with the “FOR SYSTEM\_VERSION AS OF”.  This uses the specific snapshot\_id specified.
+	![Snapshot ID](../../images/60.png)
 
-* In the examples used in this Runbook you should get the exact same output.  Both statements will use the same Snapshot which was our first data load that was for all data <= 2006.  If you specify the other Snapshot and run the same queries, you will see the same data plus you will see the year 2007 because this snapshot is for the last load we ran.
+### Step 5: Query Data for a Specific Timestamp
 
+- Highlight and execute the query with `FOR SYSTEM_TIME AS OF`. You can use either a specific timestamp or a relative timestamp. Iceberg will query the snapshot that was in effect as of the specified time.
+
+	![Query by Timestamp](../../images/61.png)
+
+### Step 6: Query Data for a Specific Snapshot ID
+
+- Highlight and execute the query with `FOR SYSTEM_VERSION AS OF` to use the specific snapshot ID.
+
+## Summary
+
+In this submodule, you learned how to use Iceberg’s **Time Travel** feature in CDP’s Impala interface to query historical data using both timestamps and snapshot IDs. These features allow you to see the state of your data at any specific point in time, which is valuable for regulatory compliance or auditing.
+
+## Next Steps
+
+To continue exploring Iceberg Time Travel with Spark SQL, proceed to the next submodule:
+
+- `02` [Time Travel Using Spark SQL](time_travel_spark_SQL.md)

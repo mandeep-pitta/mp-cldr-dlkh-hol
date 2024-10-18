@@ -22,7 +22,7 @@ The example uses airline data in CSV format, focusing on flights and airlines ta
 
 **Iceberg Table Creation (HUE):**
 
-The guide provides SQL code to execute in HUE for creating the Iceberg tables (`airlines`, `planes`, `airports`, and `flights`) within a designated database (e.g., `${user_id}_airlines`). The `flights` table is created as a partitioned table.
+The guide provides SQL code to execute in HUE for creating the Iceberg tables (`airlines`, `planes`, `airports`, and `flights`) within a designated database (e.g., `${prefix}_airlines`). The `flights` table is created as a partitioned table.
 
 **NiFi Flow Development is Out of Scope**
 
@@ -33,7 +33,7 @@ While this module mentions using NiFi for data ingestion, it does not cover the 
 - This module focuses on setting up the Iceberg Data Lakehouse and understanding the role of NiFi Processors for data ingestion.
 - Separate documentation likely exists for developing the NiFi flow itself.
 
-**Remember to replace `${user_id}` with your actual user ID throughout the process.**
+**Remember to replace `${prefix}` with your actual user ID throughout the process.**
 
 To begin, select one of the sub-modules below:
 
@@ -100,18 +100,18 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
   - Create a DataHub cluster using the Flow Management Light Duty template
 
-    - Name: “**\<user-id>**-dataflow-light”
+    - Name: “**\<prefix>**-dataflow-light”
 
 - Enable CDF for the Environment, if not already enabled
 
 
 ## Create CDW Virtual Warehouse
 
-- Create a CDW Hive Virtual Warehouses attached to the Default Database Catalog, replace \<user-id> with your user id
+- Create a CDW Hive Virtual Warehouses attached to the Default Database Catalog, replace \<prefix> with your user id
 
   - Create a Hive VW
 
-    - Name: “**\<user-id>**-iceberg-hive-vw”
+    - Name: “**\<prefix>**-iceberg-hive-vw”
 
     - Type: Hive
 
@@ -124,7 +124,7 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
 ## Setting up the Databases for the Data Lakehouse (Iceberg)
 
-- Execute the following in HUE using the Hive VW named **\<user-id>-iceberg-hive-vw**
+- Execute the following in HUE using the Hive VW named **\<prefix>-iceberg-hive-vw**
 
   - Copy & paste the SQL (`in gray`) below
 
@@ -134,31 +134,31 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
 ```
     -- CREATE DATABASES
-    CREATE DATABASE ${user_id}_airlines_csv;
-    CREATE DATABASE ${user_id}_airlines;
+    CREATE DATABASE ${prefix}_airlines_csv;
+    CREATE DATABASE ${prefix}_airlines;
 
     -- CREATE CSV TABLES
-    drop table if exists ${user_id}_airlines_csv.flights_csv;
+    drop table if exists ${prefix}_airlines_csv.flights_csv;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines_csv.flights_csv (month int, dayofmonth int, dayofweek int, deptime int, crsdeptime int, arrtime int, crsarrtime int, uniquecarrier string, flightnum int, tailnum string, actualelapsedtime int, crselapsedtime int, airtime int, arrdelay int, depdelay int, origin string, dest string, distance int, taxiin int, taxiout int, cancelled int, cancellationcode string, diverted string, carrierdelay int, weatherdelay int, nasdelay int, securitydelay int, lateaircraftdelay int, year int)
+    CREATE EXTERNAL TABLE ${prefix}_airlines_csv.flights_csv (month int, dayofmonth int, dayofweek int, deptime int, crsdeptime int, arrtime int, crsarrtime int, uniquecarrier string, flightnum int, tailnum string, actualelapsedtime int, crselapsedtime int, airtime int, arrdelay int, depdelay int, origin string, dest string, distance int, taxiin int, taxiout int, cancelled int, cancellationcode string, diverted string, carrierdelay int, weatherdelay int, nasdelay int, securitydelay int, lateaircraftdelay int, year int)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
     STORED AS TEXTFILE LOCATION 's3a://${cdp_env_bucket}/airlines-csv/flights' tblproperties("skip.header.line.count"="1");
 
-    drop table if exists ${user_id}_airlines_csv.planes_csv;
+    drop table if exists ${prefix}_airlines_csv.planes_csv;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines_csv.planes_csv (tailnum string, owner_type string, manufacturer string, issue_date string, model string, status string, aircraft_type string, engine_type string, year int)
+    CREATE EXTERNAL TABLE ${prefix}_airlines_csv.planes_csv (tailnum string, owner_type string, manufacturer string, issue_date string, model string, status string, aircraft_type string, engine_type string, year int)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
     STORED AS TEXTFILE LOCATION 's3a://${cdp_env_bucket}/airlines-csv/planes' tblproperties("skip.header.line.count"="1");
 
-    drop table if exists ${user_id}_airlines_csv.airlines_csv;
+    drop table if exists ${prefix}_airlines_csv.airlines_csv;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines_csv.airlines_csv (code string, description string) 
+    CREATE EXTERNAL TABLE ${prefix}_airlines_csv.airlines_csv (code string, description string) 
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
     STORED AS TEXTFILE LOCATION 's3a://${cdp_env_bucket}/airlines-csv/airlines/' tblproperties("skip.header.line.count"="1");
 
-    drop table if exists ${user_id}_airlines_csv. airports_csv;
+    drop table if exists ${prefix}_airlines_csv. airports_csv;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines_csv.airports_csv (iata string, airport string, city string, state DOUBLE, country string, lat DOUBLE, lon DOUBLE)
+    CREATE EXTERNAL TABLE ${prefix}_airlines_csv.airports_csv (iata string, airport string, city string, state DOUBLE, country string, lat DOUBLE, lon DOUBLE)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'
     STORED AS TEXTFILE LOCATION 's3a://${cdp_env_bucket}/airlines-csv/airports' tblproperties("skip.header.line.count"="1");
 
@@ -166,21 +166,21 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
     --
     -- CREATE AIRLINES TABLE
-    drop table if exists ${user_id}_airlines.airlines;
+    drop table if exists ${prefix}_airlines.airlines;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.airlines (code string, description string) 
+    CREATE EXTERNAL TABLE ${prefix}_airlines.airlines (code string, description string) 
     STORED BY ICEBERG
     STORED AS PARQUET
     tblproperties("format-version"="2",'external.table.purge'='true');
 
-    INSERT INTO ${user_id}_airlines.airlines
-      SELECT * FROM ${user_id}_airlines_csv.airlines_csv;
+    INSERT INTO ${prefix}_airlines.airlines
+      SELECT * FROM ${prefix}_airlines_csv.airlines_csv;
 
     --
     -- CREATE PLANES TABLE
-    drop table if exists ${user_id}_airlines.planes;
+    drop table if exists ${prefix}_airlines.planes;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.planes (
+    CREATE EXTERNAL TABLE ${prefix}_airlines.planes (
       tailnum STRING, owner_type STRING, manufacturer STRING, issue_date STRING,
       model STRING, status STRING, aircraft_type STRING,  engine_type STRING, year INT 
     ) 
@@ -188,29 +188,29 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
     STORED AS PARQUET
     TBLPROPERTIES ("format-version"="2",'external.table.purge'='true');
 
-    INSERT INTO ${user_id}_airlines.planes
-      SELECT * FROM ${user_id}_airlines_csv.planes_csv;
+    INSERT INTO ${prefix}_airlines.planes
+      SELECT * FROM ${prefix}_airlines_csv.planes_csv;
 
-    drop table if exists ${user_id}_airlines.unique_tickets;
+    drop table if exists ${prefix}_airlines.unique_tickets;
 
-    INSERT INTO ${user_id}_airlines.unique_tickets
-      SELECT * FROM ${user_id}_airlines_csv.unique_tickets_csv;
+    INSERT INTO ${prefix}_airlines.unique_tickets
+      SELECT * FROM ${prefix}_airlines_csv.unique_tickets_csv;
 
     --
     -- CREATE AIRPORTS TABLE - CTAS to create Iceberg Table format
-    drop table if exists ${user_id}_airlines.airports;
+    drop table if exists ${prefix}_airlines.airports;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.airports
+    CREATE EXTERNAL TABLE ${prefix}_airlines.airports
       STORED BY ICEBERG 
       TBLPROPERTIES ("format-version"="2",'external.table.purge'='true')
     AS
-      SELECT * FROM ${user_id}_airlines_csv.airports_csv;
+      SELECT * FROM ${prefix}_airlines_csv.airports_csv;
 
     --
     -- CREATE FLIGHTS TABLE - Partitioned Iceberg Table
-    drop table if exists ${user_id}_airlines.flights;
+    drop table if exists ${prefix}_airlines.flights;
 
-    CREATE EXTERNAL TABLE ${user_id}_airlines.flights (
+    CREATE EXTERNAL TABLE ${prefix}_airlines.flights (
      month int, dayofmonth int, 
      dayofweek int, deptime int, crsdeptime int, arrtime int, 
      crsarrtime int, uniquecarrier string, flightnum int, tailnum string, 
@@ -227,28 +227,28 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
     --
     -- Load Data into Partitioned Iceberg Table
-    INSERT INTO ${user_id}_airlines.flights
-     SELECT * FROM ${user_id}_airlines_csv.flights_csv
+    INSERT INTO ${prefix}_airlines.flights
+     SELECT * FROM ${prefix}_airlines_csv.flights_csv
      WHERE year <= 2006;
 
     --
     -- Partition Evolution
-    ALTER TABLE ${user_id}_airlines.flights
+    ALTER TABLE ${prefix}_airlines.flights
     SET PARTITION spec ( year, month );
 
     --
     -- Load Data into Iceberg Table using NEW Partition
-    INSERT INTO ${user_id}_airlines.flights
-     SELECT * FROM ${user_id}_airlines_csv.flights_csv
+    INSERT INTO ${prefix}_airlines.flights
+     SELECT * FROM ${prefix}_airlines_csv.flights_csv
      WHERE year IN (2007, 2008);
 ```
 
 
 ## CDE Setup
 
-- Enable a CDE Service, replace \<user-id> with your user id
+- Enable a CDE Service, replace \<prefix> with your user id
 
-  - Name: **\<user-id>**-iceberg-de
+  - Name: **\<prefix>**-iceberg-de
 
   - Workload Type: General - Small
 
@@ -258,9 +258,9 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
 
 ![](../../images/enable_cde_service.png)
 
-- Add a New Virtual Cluster, replace \<user-id> with your user id
+- Add a New Virtual Cluster, replace \<prefix> with your user id
 
-  - Name: **\<user-id>**-iceberg-vc
+  - Name: **\<prefix>**-iceberg-vc
 
   - Type: Tier-2 (will be using Sessions - could also run in batch, but sessions is much easier)
 

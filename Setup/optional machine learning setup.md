@@ -1,8 +1,8 @@
 ## CML Setup
 
-- Create a CML Workspace, replace \<user-id> with your user id
+- Create a CML Workspace, replace \<prefix> with your user id
 
-  - Name: **\<user-id>**\_iceberg\_cml
+  - Name: **\<prefix>**\_iceberg\_cml
 
   - Advanced Options
 

@@ -12,7 +12,7 @@ This Open Data Lakehouse Runbook showcases the end-to-end capabilities of the Cl
 - [**Module 04 - Partition Evolution**](Modules/Module%2004%20-%20Partition%20Evolution/README.md): Discover how Iceberg manages table partitions to optimize data organization and queries.
 - [**Module 05 - Loading Data for Multi-function Analytics**](Modules/Module%2005%20-%20Loading%20Data%20Multi-function%20Analytics/README.md): Explore advanced data loading techniques to support various analytics use cases.
 - [**Module 06 - Time Travel**](Modules/Module%2006%20-%20Time%20Travel/README.md): Leverage Iceberg's capabilities to query historical data at specific points in time.
-- [**Module 07 - ACID Transactions**](Modules/Module%2007%20-%20ACID/README.md): Ensure data consistency and integrity through ACID transactions within your Iceberg tables.
+- [**Module 07 - ACID Transactions**](Modules/Module%2007%20-%20ACID%20Transactions/README.md): Ensure data consistency and integrity through ACID transactions within your Iceberg tables.
 - [**Module 08 - Schema Evolution**](Modules/Module%2008%20-%20Schema%20Evolution/README.md): Learn how to adapt your Iceberg table schema to accommodate changes in your data.
 - [**Module 09 - Security**](Modules/Module%2009%20-%20Security/README.md): Implement robust security measures to govern access and control data within your Iceberg tables.
 - [**Module 10 - Data Catalog**](Modules/Module%2010%20-%20Data%20Catalog/README.md): Effectively manage and discover your Iceberg tables through the data catalog.

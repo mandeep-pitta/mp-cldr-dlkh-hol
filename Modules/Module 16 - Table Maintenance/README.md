@@ -8,7 +8,7 @@ This module dives into maintaining Iceberg tables in your Cloudera Data Platform
 2. **Rollback:** Reverts the table to a previous state in case of bad data insertion.
 3. **Snapshot Expiration:** Manages storage space by removing old snapshots.
 
-The module utilizes a sample "flights" table within the `user_id` project for demonstration purposes.
+The module utilizes a sample "flights" table within the `prefix` project for demonstration purposes.
 
 **Submodules:**
 
@@ -30,7 +30,7 @@ The module utilizes a sample "flights" table within the `user_id` project for de
     - Code to expire all snapshots up to a specific point in time (be cautious as expired snapshots cannot be recovered for time travel queries).
     - Steps to verify that snapshots have been successfully removed.
 
-**Remember to replace `${user_id}` with your actual user ID throughout the process.**
+**Remember to replace `${prefix}` with your actual user ID throughout the process.**
 
 **Additional Notes:**
 

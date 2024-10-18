@@ -9,7 +9,7 @@ The following describes the steps to perform to leverage the Iceberg Processors 
 
 - The source data is located in a “public” S3 bucket
 
-- The target will be the “**\<user-id>\_airlines.flights**” Iceberg table
+- The target will be the “**\<prefix>\_airlines.flights**” Iceberg table
 
 - This flow can also be deployed using Flow Designer as well - just follow this same approach
 
@@ -83,13 +83,13 @@ Double click on the Process Group.  This will be the resulting Flow (with a few
 
    - Ensure the nifi user has access to the directory plus these 3 files
 
-   - Below is the sample of commands that need to be executed.  Replace \<user-id> with your user-id you’ve been using
+   - Below is the sample of commands that need to be executed.  Replace \<prefix> with your prefix you’ve been using
 
 ```
     ssh <worker-pub-ip>
-    mkdir /tmp/<user-id>
-    cp *.xml /tmp/<user-id>/
-    sudo chown -R nifi:nifi /tmp/<user-id>
+    mkdir /tmp/<prefix>
+    cp *.xml /tmp/<prefix>/
+    sudo chown -R nifi:nifi /tmp/<prefix>
 ```
 
 - **NiFi UI**
@@ -104,9 +104,9 @@ Double click on the Process Group.  This will be the resulting Flow (with a few
 
     4. Workload Password - your workload user password
 
-    5. Hadoop Configuration Resources - this should contain the path to the xml files on the NiFi Worker nodes, ie. /tmp/\<user-id>/hive-site.xml,/tmp/\<user-id>/core-site.xml,/tmp/\<user-id>/hdfs-site.xml
+    5. Hadoop Configuration Resources - this should contain the path to the xml files on the NiFi Worker nodes, ie. /tmp/\<prefix>/hive-site.xml,/tmp/\<prefix>/core-site.xml,/tmp/\<prefix>/hdfs-site.xml
 
-    6. Database - should be “\<user-id>\_airlines” , using the \<user-id> you used to run the SQL to create the Data Lakehouse in the DW steps
+    6. Database - should be “\<prefix>\_airlines” , using the \<prefix> you used to run the SQL to create the Data Lakehouse in the DW steps
 
     7. Hive Metastore URI - use the Hive Metastore URIs found in the previous step
 
@@ -134,9 +134,9 @@ Double click on the Process Group.  This will be the resulting Flow (with a few
 
    - You may have missed copying 1 or more of the .xml files to the Worker nodes
 
-   - The permissions on the /tmp/\<user-id> directory do not allow the nifi user or group access to this directory properly
+   - The permissions on the /tmp/\<prefix> directory do not allow the nifi user or group access to this directory properly
 
-   - The permissions on the .xml files in /tmp/\<user-id> do not allow the nifi user or group access to the files properly
+   - The permissions on the .xml files in /tmp/\<prefix> do not allow the nifi user or group access to the files properly
 
 - Run the Flow - **start all** of the Processors
 
@@ -286,7 +286,7 @@ Double click on the Process Group.  This will be the resulting Flow (with a few
 
      - The Hive Metastore URI(s) - acquired in the Prerequisite Steps from the hive-site.xml file
 
-     - The Hadoop Configuration Resources - is the location of the hive-site.xml, core-site.xml, and hdfs-site.xml files on each NiFi Worker Node.  In these instructions we use the /tmp/\<user-id> directory
+     - The Hadoop Configuration Resources - is the location of the hive-site.xml, core-site.xml, and hdfs-site.xml files on each NiFi Worker Node.  In these instructions we use the /tmp/\<prefix> directory
 
 ![configure_hivecatalog_controller_service.png](../../images/configure_hivecatalog_controller_service.png)
 

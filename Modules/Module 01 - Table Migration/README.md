@@ -1,4 +1,4 @@
-# MODULE 01 - Table Migration
+# Module 01 - Table Migration
 
 ## Migrating Tables to Iceberg and Querying Multiple Table Formats
 

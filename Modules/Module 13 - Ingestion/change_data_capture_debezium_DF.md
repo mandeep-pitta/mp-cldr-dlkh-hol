@@ -10,7 +10,7 @@
 
 - The source is a GenerateFlowFile processor that has a JSON that mimics what data would be transmitted from GoldenGate
 
-- The target is the “**\<user-id>\_airlines.airlines**” Iceberg table
+- The target is the “**\<prefix>\_airlines.airlines**” Iceberg table
 
 - **NOTE:** the CDC data can be written the the Iceberg table as singleton inserts, deletes, and updates.  HOWEVER, if you try to query the Iceberg table (as of 2023-12-14) immediately after writing the data the query WILL Fail.
 
@@ -38,7 +38,7 @@ Download the Flow Definition - [here](https://drive.google.com/open?id=1fjDf0FbN
 
 1. Import the Flow Definition - click on the “Import Flow Definition” button
 
-   - Give the flow a name - “**\<user-id>-ice-cdc-version-1**”
+   - Give the flow a name - “**\<prefix>-ice-cdc-version-1**”
 
    - Upload the Flow Definition .json file you just downloaded
 
@@ -48,7 +48,7 @@ Download the Flow Definition - [here](https://drive.google.com/open?id=1fjDf0FbN
 
 **Getting the Flow to Execute**
 
-- Create New Draft from Catalog - click on “\<user-id>-ice-cdc” flow to open the properties page
+- Create New Draft from Catalog - click on “\<prefix>-ice-cdc” flow to open the properties page
 
 ![](../../images/cdc_in_flow_catalog.png)
 
@@ -60,19 +60,19 @@ Download the Flow Definition - [here](https://drive.google.com/open?id=1fjDf0FbN
 
 - Target Project - is optional
 
-- In “Draft Name” name the Draft “**\<user-id>-ice-cdc**”
+- In “Draft Name” name the Draft “**\<prefix>-ice-cdc**”
 
 - Click on the “Create” button
 
 ![](../../images/cdc_draft_properties.png)
 
-- This will open the Draft in **Flow Designer** - for draft named “**\<user-id>-ice-cdc**”
+- This will open the Draft in **Flow Designer** - for draft named “**\<prefix>-ice-cdc**”
 
   1. Modify Parameters - 
 
 ![](../../images/cdc_flow_parameters.png)
 
-- Database - modify to “\<user-id>\_airlines”
+- Database - modify to “\<prefix>\_airlines”
 
 - Table Name - name of the table to apply CDC transactions to; no change required
 
@@ -467,9 +467,9 @@ The size of the compaction is super small for this to ensure that the compaction
 ```
     # SPARK CODE to compact Airlines Iceberg Table after CDC
 
-    user_id = "<user-id>"
+    prefix = "<prefix>"
 
-    table_name = user_id + "_airlines.airlines"
+    table_name = prefix + "_airlines.airlines"
 
     spark.sql("CALL spark_catalog.system.rewrite_data_files(table => '" + table_name + "', options => map('target-file-size-bytes','50'))").show()
 ```     

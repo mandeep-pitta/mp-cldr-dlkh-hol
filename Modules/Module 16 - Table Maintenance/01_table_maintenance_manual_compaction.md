@@ -1,18 +1,18 @@
 # Manual Table Compaction & Manifest rewrite - ensures optimal performance
 
-- In   project “\<user-id>-iceberg-project”
+- In   project “\<prefix>-iceberg-project”
 
 - Create a new file, named “iceberg\_table\_maintenance.py”
 
   - Copy paste the following code
 
 ```
-    # Replace <user-id> below with your user id
+    # Replace <prefix> below with your user id
 
-    user_id = "<user-id>"
+    prefix = "<prefix>"
 
-    table_name = user_id + "_airlines_maint.flights"
-    insert_stmt = "INSERT INTO " + table_name + " SELECT * FROM " + user_id + "_airlines_csv.flights_csv"
+    table_name = prefix + "_airlines_maint.flights"
+    insert_stmt = "INSERT INTO " + table_name + " SELECT * FROM " + prefix + "_airlines_csv.flights_csv"
 
     # Load Data Files, to create larger number of files written for table
     for i in range(1,32):

@@ -8,7 +8,7 @@
 
 - Create CDW DataViz instance 
 
-  - In CDW, create a Data Visualization instance (replace \<user-id> with your user id) named **\<user-id>-iceberg-cdv**
+  - In CDW, create a Data Visualization instance (replace \<prefix> with your user id) named **\<prefix>-iceberg-cdv**
 
     - Size: small
 

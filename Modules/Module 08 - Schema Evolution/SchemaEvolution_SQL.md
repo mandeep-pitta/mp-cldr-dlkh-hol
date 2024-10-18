@@ -1,39 +1,55 @@
-# Schema Evolution
+# Evolve Iceberg Table Schema Using SQL
 
-In this Demo, we'll be exploring in-place schema evolution.
+## Overview
 
-**In-place Schema Evolution feature - Add columns to table**
+In this submodule, we will explore in-place schema evolution for Iceberg tables using SQL in Hue (Hive Virtual Warehouse). This process allows you to modify the table schema without affecting existing data, ensuring backward compatibility and flexibility for evolving business requirements.
 
-* Execute the folling in HUE for the Hive VW
+## Step-by-Step Guide
+
+### Step 1: Add Columns to the Table
+
+Execute the following in Hue (Hive Virtual Warehouse) to add new columns to the `airlines` table.
+
 ```
 ALTER TABLE ${prefix}_airlines.airlines ADD COLUMNS(status STRING, updated TIMESTAMP);
 ```
 
+- The existing table data will **not be modified** with this statement.
+
    ![In Place Table Evolution](../../images/SchemaEvolution_Add_Columns.png)
 
-   - The existing table data is **not modified** with this statement
+### Step 2: Refresh the Table Browser
 
-* Refresh the table browser to see new columns added
+- Click on the **Refresh** button to the right of `Tables`.
+- Click on the `airlines` table to see the newly added columns: `status` and `updated`.
 
-   - Click on the refresh button to the right of `Tables`
-
-   - Click `airlines` table to see the new columns: `status` and `updated`
-   
    ![Updated Table Metadata](../../images/SchemaEvolution_Updated_Metadata.png)
 
-* Add data into the new schema for `airlines` table
+### Step 3: Add Data Into the New Schema
+
+Use the following query to insert data into the new schema of the `airlines` table:
 
 ```
 INSERT INTO ${prefix}_airlines.airlines
 VALUES("Z999","Adrenaline Airways","NEW",now());
 ```
 
-* Query `airlines` table to see old and new schema data
+### Step 4: Query the Table to See Old and New Data
+
+Query the `airlines` table to observe how the old and new schema data co-exist. The newly inserted row will have values in the new columns, while existing rows will show `NULL` values for the new columns.
 
 ```
 SELECT * FROM ${prefix}_airlines.airlines WHERE code > "Z";
 ```
 
-   - As you scroll through the results you will see the 2 columns that we added will contain "NULL" values for the data that was already in the table and the new record we inserted will have value in the new columns `status` and `updated`
+   ![View Data After Schema Evolution](../../images/SchemaEvolution_View_Results.png)
 
-   ![View data after Schema Evolution](../../images/SchemaEvolution_View_Results.png)
+## Summary
+
+In this submodule, you learned how to evolve the schema of an Iceberg table in-place using SQL commands in Hue. You successfully added new columns without affecting the existing data, demonstrating Iceberg's ability to handle schema changes without costly rewrites.
+
+## Next Steps
+
+To continue exploring schema evolution in Iceberg, proceed to the next submodule:
+
+- `02` **[Evolve Iceberg Table Schema Using Spark SQL](SchemaEvolution_SparkSQL.md)**

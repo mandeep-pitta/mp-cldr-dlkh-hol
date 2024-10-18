@@ -6,7 +6,7 @@
 
 ```
     -- EXPIRE SNAPSHOT(S)
-    SELECT * FROM ${user_id}_airlines_maint.flights.snapshots;
+    SELECT * FROM ${prefix}_airlines_maint.flights.snapshots;
 ```
 
 - Select one of the Snapshots
@@ -16,12 +16,12 @@
 ```
     -- Expire Snapshots up to the specified timestamp
     --      BE CAREFUL: Once you run this you will not be able to Time Travel for any Snapshots that you Expire
-    ALTER TABLE ${user_id}_airlines_maint.flights EXECUTE expire_snapshots('${create_ts}');
+    ALTER TABLE ${prefix}_airlines_maint.flights EXECUTE expire_snapshots('${create_ts}');
 ```
 
 - Execute to see the snapshots have been removed
 
 ```
     -- Ensure Snapshots have been removed
-    SELECT * FROM ${user_id}_airlines_maint.flights.snapshots;
+    SELECT * FROM ${prefix}_airlines_maint.flights.snapshots;
 ```

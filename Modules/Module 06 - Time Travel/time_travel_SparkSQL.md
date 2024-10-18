@@ -1,20 +1,21 @@
-# Time Travel - Spark SQL
+# Time Travel Using Spark SQL
 
-In the previous steps we have been loading data into the flights Iceberg table.  Each time we add (delete or update) data a Snapshot is captured.  This is important for many reasons but the main point of the Snapshot is to ensure eventual consistency and allow for multiple reads/writes concurrently (from various engines or the same engine).  In this Runbook you take advantage of one of the features, Time Travel.  We will use this to query data from a specific point in time, a good use case where this is important is regulatory compliance.
+## Overview
 
-- In the next few steps execute the following in CDE Session started using Spark version 3.5.1 (version 3.3.x should work as well)
+In the previous steps, we have been loading data into the `flights` Iceberg table. Each time we add, delete, or update data, a snapshot is captured. This ensures eventual consistency and allows multiple reads/writes concurrently from various engines. In this submodule, we will leverage the **Time Travel** feature in Spark SQL to query data from a specific point in time. A common use case for this feature is regulatory compliance.
 
+## Step-by-Step Guide
 
-**Time Travel feature - SYSTEM_VERSION **
+### Step 1: Execute Time Travel with SYSTEM_VERSION
 
-- In the next few steps execute the following in HUE for Impala VW
+In this step, you will execute the following commands in a CDE session using Spark version 3.5.1 (or version 3.3.x).
 
 ```
 from pyspark.sql.functions import col
 
-# Variables - replace <user_id> with your user id
-user_id = "<user_id>"
-odl_database_name = user_id + "_airlines"
+# Variables - replace <prefix> with your user ID
+prefix = "<prefix>"
+odl_database_name = prefix + "_airlines"
 
 # RETURN SNAPSHOTS (History)
 history_df = spark.sql(f"SELECT * FROM {odl_database_name}.flights.snapshots")
@@ -28,21 +29,21 @@ snapshot_id = history_df.first().snapshot_id
 
 print("Actual Timestamp of Snapshot: ", snapshot_id)
 
-# TIME TRAVEL TO THIS DATE
+# TIME TRAVEL TO THIS SNAPSHOT
 spark.sql(f"SELECT year, count(*) FROM {odl_database_name}.flights SYSTEM_VERSION AS OF {snapshot_id} GROUP BY year ORDER BY year desc").show()
-
 ```
 
+### Step 2: Execute Time Travel with SYSTEM_TIME
 
-**Time Travel feature - SYSTEM_TIME **
+In this step, you will query historical data using a timestamp-based approach.
 
 ```
 from pyspark.sql.functions import col
 import datetime
 
-# Variables - replace <user_id> with your user id
-user_id = "<user_id>"
-odl_database_name = user_id + "_airlines"
+# Variables - replace <prefix> with your user ID
+prefix = "<prefix>"
+odl_database_name = prefix + "_airlines"
 
 # RETURN SNAPSHOTS (History)
 history_df = spark.sql(f"SELECT * FROM {odl_database_name}.flights.snapshots")
@@ -64,13 +65,16 @@ print("Relative Timestamp for Time Travel: ", relative_ts)
 
 # TIME TRAVEL TO THIS DATE
 spark.sql(f"SELECT year, count(*) FROM {odl_database_name}.flights FOR SYSTEM_TIME AS OF '{relative_ts}' GROUP BY year ORDER BY year desc").show()
-
 ```
 
-**Notes:
-- The line "SELECT * FROM \<db>.\<table>.snapshots” line returns all of the available Snapshots for the flights Iceberg table.  These Snapshots were automatically captured each time we loaded data.
+### Step 3: Review Snapshots
 
-![.png](../../images/.png)
+- The command `SELECT * FROM <db>.<table>.snapshots` returns all available snapshots for the `flights` Iceberg table. These snapshots are automatically captured each time data is loaded.
 
-* In the examples used in this Runbook you should get the exact same output.  Both statements will use the same Snapshot which was our first data load that was for all data <= 2006.  If you specify the other Snapshot and run the same queries, you will see the same data plus you will see the year 2007 (or possibly year 2008) because this snapshot is for the last load we ran.
+## Summary
 
+In this submodule, you learned how to use Iceberg’s **Time Travel** feature in Spark SQL to query historical data using both snapshot IDs and timestamps. This allows you to retrieve the state of your data at any specific point in time for auditing or compliance purposes.
+
+## Next Steps
+
+To explore additional functionality with Iceberg and Spark, proceed to the next module as per your learning path.

@@ -1,7 +1,7 @@
 --
 -- QUERY TO SEE DATA LOADED FROM CDE
 SELECT year, count(*) 
-FROM ${user_id}_airlines.flights
+FROM ${prefix}_airlines.flights
 GROUP BY year
 ORDER BY year desc;
 
@@ -10,48 +10,48 @@ ORDER BY year desc;
 
 -- RUN EXPLAIN PLAN ON THIS QUERY
 SELECT year, month, count(*) 
-FROM ${user_id}_airlines.flights
+FROM ${prefix}_airlines.flights
 WHERE year = 2006 AND month = 12
 GROUP BY year, month
 ORDER BY year desc, month asc;
 
 -- RUN EXPLAIN PLAN ON THIS QUERY; AND COMPARE RESULTS
 SELECT year, month, count(*) 
-FROM ${user_id}_airlines.flights
+FROM ${prefix}_airlines.flights
 WHERE year = 2007 AND month = 12
 GROUP BY year, month
 ORDER BY year desc, month asc;
 
 --
 -- SELECT SNAPSHOSTS THAT HAVE BEEN CREATED
-DESCRIBE HISTORY ${user_id}_airlines.flights;
+DESCRIBE HISTORY ${prefix}_airlines.flights;
 
 -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
 SELECT year, count(*) 
-FROM ${user_id}_airlines.flights
+FROM ${prefix}_airlines.flights
   FOR SYSTEM_TIME AS OF '${create_ts}'
 GROUP BY year
 ORDER BY year desc;
 
 -- SELECT DATA USING TIMESTAMP FOR SNAPSHOT
 SELECT year, count(*) 
-FROM ${user_id}_airlines.flights
+FROM ${prefix}_airlines.flights
   FOR SYSTEM_VERSION AS OF ${snapshot_id}
 GROUP BY year
 ORDER BY year desc;
 --
 -- [optional] SINGLE QUERY USING ICEBERG & HIVE TABLE FORMAT
 --            Uses CDV Dashboard, could also just query in HUE
--- DESCRIBE FORMATTED ${user_id}_airlines.flights;
-DESCRIBE FORMATTED ${user_id}_airlines.unique_tickets;
+-- DESCRIBE FORMATTED ${prefix}_airlines.flights;
+DESCRIBE FORMATTED ${prefix}_airlines.unique_tickets;
 
 -- [optional] Query combining Hive Table Format (unique_tickets) and Iceberg Table Format (flights)
 SELECT 
 t.leg1origin,
 f.dest,
 count(*) as num_passengers
-FROM ${user_id}_airlines.unique_tickets t
-LEFT OUTER JOIN ${user_id}_airlines.flights f ON
+FROM ${prefix}_airlines.unique_tickets t
+LEFT OUTER JOIN ${prefix}_airlines.flights f ON
   t.leg1origin = f.origin
   AND t.leg1dest = f.dest
   AND t.leg1flightnum = f.flightnum
@@ -65,4 +65,4 @@ GROUP BY t.leg1origin, f.dest;
 --     1. Run query to see Tailnum in plain text
 --     2. Ranger - enable policy
 --     3. Run query again to see Tailnum is Hashed
-SELECT * FROM ${user_id}_airlines.planes;
+SELECT * FROM ${prefix}_airlines.planes;

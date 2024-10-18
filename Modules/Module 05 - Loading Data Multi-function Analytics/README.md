@@ -1,38 +1,47 @@
-## Module 05 - Multi-Function Analytics with Iceberg and Spark
+# Module 05 - Multi-Function Analytics with Iceberg and Spark
 
-## Load An Additional Year of Data Using Spark SQL
+## Overview
 
-This module demonstrates using Apache Spark for data manipulation with Iceberg tables on the Cloudera Data Platform (CDP). Iceberg's engine-agnostic nature allows interaction with various engines, including Spark.
+In this module, you will learn how to use Apache Spark on Cloudera Data Engineering (CDE) to perform multi-function analytics with Iceberg tables on the Cloudera Data Platform (CDP). Iceberg’s engine-agnostic nature allows for seamless interaction with different compute engines. This module focuses on using Spark to add data to an existing Iceberg table, continuing from the previous demos with Cloudera Data Warehouse (CDW) and Hue.
 
-**Adding Data Using Spark SQL:**
+You will gain hands-on experience running a Spark job in CDE to load additional data into an Iceberg table and verify the data using Impala in CDW/Hue.
 
-The example provides a Python script that utilizes Spark SQL to insert data into an existing Iceberg table. The script accomplishes this by:
+### Prerequisites
 
-- Establishing a Spark session for interacting with Spark functionalities.
-- Defining a Spark SQL statement that:
-    - Reads data from a CSV file stored in cloud storage (AWS S3 is used here).
-    - Filters the data to include records for a specific year.
-    - Inserts the filtered data into the target Iceberg table (`flights`).
+Before proceeding, ensure that the following prerequisites are met:
 
-**Running the Spark Job in CDE:**
+- You have completed the previous modules where you created the Iceberg table using CDW (Hive).
+- You have access to a Cloudera Data Engineering (CDE) virtual cluster and the ability to run Spark jobs.
+- You have the necessary credentials (Kerberos) to access cloud storage (AWS S3) where the data is stored.
+- The Python script for loading data into Iceberg is prepared, and you are familiar with the basic usage of Spark and CDW.
 
-The guide outlines the process for running the Spark script within CDP:
+### What You'll Learn
 
-- You'll save the script as a Python file.
-- In CDP's virtual cluster environment, you'll create a new Spark job using the script as the application file.
-- Configuration details like Kerberos access for cloud storage will be specified.
-- The job can then be submitted for execution.
+By the end of this module, you will be able to:
 
-**Verifying Data Load (CDW/Hue):**
+- Use Apache Spark on CDE to load data into Iceberg tables.
+- Understand how to configure and run Spark jobs in Cloudera Data Engineering.
+- Verify data insertion using Impala queries in CDW/Hue.
+- Demonstrate Iceberg’s multi-engine capability, showcasing Spark and Impala for data manipulation and querying.
 
-Once the Spark job finishes successfully, you can use a query in CDW/Hue (Impala) to confirm that the data for the new year has been loaded into the `flights` Iceberg table.
+### Methods Covered in This Module
 
-This module showcases how Spark can be a valuable tool for working with Iceberg tables on CDP, enabling data manipulation tasks beyond the capabilities of the Iceberg query engine itself.
+**Load an Additional Year of Data Using Spark SQL**  
+   This submodule demonstrates how to use Spark in CDE to load an additional year of data (2008) into the Iceberg table created in earlier steps. You will learn how to:
+   - Set up and run a Spark job using a Python script that reads data from a CSV file stored in AWS S3.
+   - Filter the data for a specific year and insert it into the Iceberg table.
+   - Use CDW/Hue (Impala) to verify that the data has been successfully loaded.
 
-Remember to replace `${user_id}` with your actual user ID throughout the process.
+   [Go to Submodule 01 - Load an Additional Year of Data Using Spark SQL](load_additional_year_DE.md)
 
-To begin, select the sub-module below:
+### Key Takeaways
+
+This module showcases how Spark can be integrated with Iceberg to perform multi-function analytics, further demonstrating Iceberg's flexibility and engine-agnostic nature. The use of both Spark (for data manipulation) and Impala (for querying) highlights the power of the Cloudera Data Platform for handling complex data workflows.
+
+As always, remember to replace `${prefix}` with your actual user ID throughout the process.
 
 ## Submodules
 
-`01` [Load an Additional Year of Data](load_additional_year_DE.md)
+To continue, proceed to the submodule below:
+
+- `01` [Load an Additional Year of Data Using Spark SQL](load_additional_year_DE.md)

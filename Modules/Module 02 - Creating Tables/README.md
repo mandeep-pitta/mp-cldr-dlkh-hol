@@ -1,4 +1,4 @@
-# MODULE 02 - Creating Tables
+# Module 02 - Creating Tables
 
 ## Overview
 
@@ -31,7 +31,7 @@ Spark SQL offers a programmatic approach to defining Iceberg tables within Spark
 
 Using Spark DataFrames, you'll learn a programmatic way to create and manage Iceberg tables within Spark environments, allowing for greater flexibility and control over data operations.
 
-### Value Proposition
+### Key Takeaways
 
 By mastering these methods, you'll be equipped to create Iceberg tables tailored to your specific needs on CDP. Whether you're managing large datasets or developing scalable data architectures, Iceberg tables provide the foundation for efficient, reliable, and future-proof data management.
 

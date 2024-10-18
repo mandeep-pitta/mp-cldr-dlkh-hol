@@ -6,11 +6,11 @@
 
 ![](../images/38.png)
 
-- On the Masking tab, Add a New Policy as follows, replacing \<user-id> with your user id and then clicking on the Add button.
+- On the Masking tab, Add a New Policy as follows, replacing \<prefix> with your user id and then clicking on the Add button.
 
-  - Policy Name:  **\<user-id>**-iceberg-fgac
+  - Policy Name:  **\<prefix>**-iceberg-fgac
 
-  - Hive Database:  **\<user-id>**\_airlines
+  - Hive Database:  **\<prefix>**\_airlines
 
   - HIve Table: planes
 
@@ -18,7 +18,7 @@
 
   - Mask Conditions:
 
-    - Select User:  **\<user-id>**
+    - Select User:  **\<prefix>**
 
     - Select Access Types: select
 
@@ -26,12 +26,12 @@
 
 ![](../images/39.png)      ![](../images/39.png)
 
-- To test the Policy works properly.  Execute the following in CDW, by opening HUE for the Impala VW named **\<user-id>-iceberg-impala-vw**
+- To test the Policy works properly.  Execute the following in CDW, by opening HUE for the Impala VW named **\<prefix>-iceberg-impala-vw**
 
   - Execute the following SQL, enter your user id in the parameter box
 
 ```
-SELECT * FROM ${user_id}_airlines.planes;
+SELECT * FROM ${prefix}_airlines.planes;
 ```
 - In results you see that the Tailnum column has now been HASHed
 

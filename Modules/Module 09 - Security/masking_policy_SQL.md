@@ -1,41 +1,51 @@
-# SDX Integration (Fine Grained Access Control)
+# SQL Masking Policy
 
-In this section you will create a Ranger policy to apply a Masking Policy for the Planes Iceberg table for your user id.
+## Overview
 
-**Query the Planes Table (in CDW HUE)**
+In this submodule, we will implement a fine-grained access control (FGAC) policy using **Ranger** to mask sensitive data in the `Tailnum` column of the `planes` Iceberg table. You will apply a masking policy in the **Ranger UI**, which will protect sensitive information by replacing it with hashed values.
 
-- Execute the following in HUE for Impala VW
+## Step-by-Step Guide
 
-```
-    SELECT * FROM ${user_id}_airlines.planes;
-```
+### Step 1: Query the Planes Table (Unmasked Data)
 
-- In results you see that the Tailnum column is in plain readable text, as shown
+Start by querying the `planes` Iceberg table in Cloudera Data Warehouse (CDW) using Hue/Impala to see the unmasked `Tailnum` column.
 
-
-**Enable Ranger Policy on Planes Table**
-
-- Open Ranger UI for the Environment you are using.
-
-- Open Hadoop SQL
-
-- Edit the Policy **\<user-id>**-iceberg-fgac (replace \<user-id> with your user id)
-
-  - On the Policy details click on Disabled to Enable the policy
-
-![39.png](../../images/39.png)
-
-- Click on Save button
-
-**Query the Planes Table (in CDW HUE)**
-
-- Execute the following in HUE for Impala VW
-
-```
-    SELECT * FROM ${user_id}_airlines.planes;
+``` sql
+SELECT * FROM ${prefix}_airlines.planes;
 ```
 
-- In results you see that the Tailnum column is now been HASHed
+- In the results, you will see that the `Tailnum` column is displayed in plain text.
 
-![41.png](../../images/41.png)
+### Step 2: Enable the Ranger Masking Policy
 
+Follow these steps to enable the Ranger policy that masks the `Tailnum` column:
+
+1. Open the **Ranger UI** for your CDP environment.
+2. In the **Hadoop SQL** section, find and edit the policy named `${prefix}-iceberg-fgac` (replace `${prefix}` with your user ID).
+3. Within the policy details, click **Disabled** to enable the policy.
+
+![Enable Ranger Policy](../../images/39.png)
+
+4. Click **Save** to apply the policy.
+
+### Step 3: Query the Planes Table (Masked Data)
+
+Now, execute the same query again in Hue/Impala to verify that the `Tailnum` column has been masked:
+
+``` sql
+SELECT * FROM ${prefix}_airlines.planes;
+```
+
+- In the results, you will see that the `Tailnum` column is now hashed, confirming that the masking policy is successfully applied.
+
+![Masked Data](../../images/41.png)
+
+## Summary
+
+In this submodule, you implemented a fine-grained access control (FGAC) policy using Ranger to mask sensitive data in the `planes` table. The policy was applied to the `Tailnum` column, demonstrating how Ranger’s masking feature protects sensitive information by replacing it with hashed values.
+
+## Next Steps
+
+To continue exploring security measures in CDP, consider these modules:
+
+- **[Module 10 - Data Catalog](Module%2010%20-%20Data%20Catalog/README.md)**: Learn how to manage and discover Iceberg tables through the Cloudera Data Catalog.

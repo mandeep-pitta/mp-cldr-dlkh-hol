@@ -13,7 +13,7 @@ Branches are named references to snapshots with their own independent lifecycles
 - This query can be used to check results for flight delays
 
 ```
-SELECT * FROM ${user_id}_airlines.flights
+SELECT * FROM ${prefix}_airlines.flights
 LIMIT 100;
 ```
 
@@ -52,7 +52,7 @@ LIMIT 100;
 
 ```
 SELECT * 
-  FROM ${user_id}_airlines.flights.branch_${branch_name}
+  FROM ${prefix}_airlines.flights.branch_${branch_name}
 LIMIT 100;
 ```
 
