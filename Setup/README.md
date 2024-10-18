@@ -4,7 +4,7 @@
 
 **Required Setup Steps:**
 
-- [**Required - Install and Setup**](//required%20install%20and%20setup.md): Steps to setup the raw data layer database and "stub" Open Data Lakehouse database.
+- [**Required - Install and Setup**](Setup/required%20install%20and%20setup.md): Steps to setup the raw data layer database and "stub" Open Data Lakehouse database.
 
 
 **Optional Setup Steps:**
