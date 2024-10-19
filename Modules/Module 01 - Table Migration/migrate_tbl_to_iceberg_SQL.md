@@ -48,7 +48,7 @@ Next, you'll convert the table to Iceberg format.
 
    ``` sql
    ALTER TABLE ${prefix}_airlines.planes
-      CONVERT ICEBERG;
+      CONVERT TO ICEBERG;
 
    -- For Impala only; to use Iceberg version 2 table format, uncomment & run the following
    -- ALTER TABLE ${prefix}_airlines.planes SET TBLPROPERTIES('format-version'='2');
