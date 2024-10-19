@@ -26,7 +26,7 @@ Now, let’s examine the `unique_tickets` table, which remains in Hive format (i
 
   ``` sql
   -- [optional] SINGLE QUERY USING ICEBERG & HIVE TABLE FORMAT
-  DESCRIBE FORMATTED ${prefix}_airlines.flights;
+  DESCRIBE FORMATTED ${prefix}_airlines.flights_iceberg;
   DESCRIBE FORMATTED ${prefix}_airlines.unique_tickets;
   ```
 
@@ -43,7 +43,7 @@ Execute the following query to combine data from the Hive table (`unique_tickets
     f.dest,
     count(*) as num_passengers
   FROM ${prefix}_airlines.unique_tickets t
-  LEFT OUTER JOIN ${prefix}_airlines.flights f ON
+  LEFT OUTER JOIN ${prefix}_airlines.flights_iceberg f ON
     t.leg1origin = f.origin
     AND t.leg1dest = f.dest
   GROUP BY t.leg1origin, f.dest;
