@@ -45,7 +45,7 @@
 
     # Table Maintenance to Manually Compact files to size of 500MB
     #    Compact flights table files into fewer files
-    spark.sql("CALL spark_catalog.system.rewrite_manifests(table => <prefix>_airlines_maint.flights )").show()
+    spark.sql("CALL spark_catalog.system.rewrite_manifests(table => '"+ table_name +"')").show()
 
     # After Compaction, see that there is only 1 file which is about 11MB that needs to be read in the same directory
     spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM "+ table_name +".manifests").show(100)
