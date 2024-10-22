@@ -1,7 +1,5 @@
 ## Open Data Lakehouse Runbook
 
-### Gaining a Competitive Advantage with Apache Iceberg
-
 This Open Data Lakehouse Runbook showcases the end-to-end capabilities of the Cloudera Data Platform (CDP) Open Data Lakehouse powered by Apache Iceberg. It guides you through a multi-functional data analytics process, covering:
 
 ### **Modules:**
