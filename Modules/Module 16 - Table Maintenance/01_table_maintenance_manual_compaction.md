@@ -48,7 +48,7 @@
     spark.sql("CALL spark_catalog.system.rewrite_manifests(table => table_name )").show()
 
     # After Compaction, see that there is only 1 file which is about 11MB that needs to be read in the same directory
-    spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM jing_airlines_maint.flights.manifests").show(100)
+    spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM "+ table_name +".manifests").show(100)
 ```
 
 Now let's investigate the "Bad" record we saw previously
