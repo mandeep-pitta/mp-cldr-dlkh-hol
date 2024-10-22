@@ -16,65 +16,29 @@ Before running this submodule, ensure that:
 - You have installed an IDE or text editor (e.g., VS Code) to modify the Python script.
 
 ## Step-by-Step Guide
+
+## Step1
 Go to Cloudera Data Engineering and click on "New Session"
 <img width="1092" alt="image" src="https://github.com/user-attachments/assets/d67e60d8-4edf-4447-9472-790a6548a6d6">
 
+## Step2
+Create a session "<prefix>_IcebergAdd2008_Session"
+<img width="704" alt="image" src="https://github.com/user-attachments/assets/70e0cd30-8482-46c2-852e-286351472d62">
 
-### Step 1: Prepare the Spark Script
-
-Open a text editor (e.g., VS Code) and create a Python script that will load data from AWS S3 into the Iceberg table.
-
-Copy the following code into your Python file, replacing `<prefix>` with your user ID.
-
+## Step3
+Once this is created click on Interact to use Spark Shell commands.
 ```
-#****************************************************************************
-# 
-#  ICEBERG (Multi-function Analytics) - LOAD DATA  into table created in CDW
-#
-#***************************************************************************/
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 import pyspark.sql.functions as F
+```
+Replace <prefix> with your desired prefix
 
-#---------------------------------------------------
-#               CREATE SPARK SESSION
-#---------------------------------------------------
-spark = SparkSession.builder.appName('Ingest').getOrCreate()
-
-#-----------------------------------------------------------------------------------
-# LOAD DATA 1 YEAR (2008) FROM RAW DATA CSV FILES ON AWS S3 CLOUD STORAGE
-#          A  TABLE IS ALREADY CREATED ON TOP OF THE CSV FILE
-#          RUN INSERT INTO ICEBERG TABLE FROM THE RAW CSV TABLE
-#
-#-----------------------------------------------------------------------------------
+```
 print("JOB STARTED...")
 spark.sql("INSERT INTO <prefix>_airlines.flights SELECT * FROM <prefix>_airlines_csv.flights_csv WHERE year = 2008 ")
-
 print("JOB COMPLETED.\n\n")
 ```
-
-Save the file as `IcebergAdd2008.py` in a location you can easily access.
-
-### Step 2: Create and Run the Spark Job in CDE
-
-1. Navigate to the CDE console and click on **View Jobs** for your virtual cluster named **<prefix>-iceberg-vc**, replacing `<prefix>` with your user ID.
-2. Click **Create Job** and configure the following settings:
-   - **Job Type**: Spark 3.2.0
-   - **Name**: `<prefix>-IcebergAdd2008`
-   - **Application File**: Upload the `IcebergAdd2008.py` script you just saved.
-   - **Select Resource**: Create a new resource named `<prefix>-IcebergAdd2008`.
-   - **Kerberos Configuration**: Set `spark.kerberos.access.hadoopFileSystems = s3a://<cdp-bucket>`, replacing `<cdp-bucket>` with the correct bucket name.
-   
-3. Click **Create and Run** to execute the job.
-
-   ![Upload File (Python)](../../images/63.png)
-
-### Step 3: Monitor Job Execution
-
-1. Go to **Job Runs** in CDE and click on the job you just submitted.
-2. Review the logs and run history to confirm successful execution.
-
-   ![CDE Job Run](../../images/62.png)
 
 ### Step 4: Verify the Data in CDW/Hue
 
