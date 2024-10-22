@@ -15,9 +15,10 @@ This Open Data Lakehouse Runbook showcases the end-to-end capabilities of the Cl
 - [**Module 07 - ACID Transactions**](Modules/Module%2007%20-%20ACID%20Transactions/README.md): Ensure data consistency and integrity through ACID transactions within your Iceberg tables.
 - [**Module 08 - Schema Evolution**](Modules/Module%2008%20-%20Schema%20Evolution/README.md): Learn how to adapt your Iceberg table schema to accommodate changes in your data.
 - [**Module 09 - Security**](Modules/Module%2009%20-%20Security/README.md): Implement robust security measures to govern access and control data within your Iceberg tables.
-- [**Module 10 - Visualizations**](Modules/Module%2011%20-%20Visualizations/README.md): Integrate your Iceberg tables with data visualization tools for interactive data exploration.
-- [**Module 11 - Ingestion with Iceberg and NiFi**](Modules/Module%2013%20-%20Ingestion/README.md): Set up and use NiFi Processors to ingest data into your Iceberg Data Lakehouse.
-- [**Module 12 - Table Maintenance**](Modules/Module%2016%20-%20Table%20Maintenance/README.md): Perform maintenance tasks on your Iceberg tables to optimize performance and storage efficiency.
+- [**Module 10 - Visualizations**](Modules/Module%2010%20-%20Visualizations/README.md): Integrate your Iceberg tables with data visualization tools for interactive data exploration.
+- [**Module 11 - Table Maintenance**](Modules/Module%2011%20-%20Table%20Maintenance/README.md): Perform maintenance tasks on your Iceberg tables to optimize performance and storage efficiency.
+- [**Module 12 - Ingestion with Iceberg and NiFi**](Modules/Module%2012%20-%20Ingestion/README.md): Set up and use NiFi Processors to ingest data into your Iceberg Data Lakehouse.
+
 
 ### **Leverage Iceberg for Superior Data Management**
 
