@@ -2,7 +2,7 @@
 
 ## Overview
 
-This submodule demonstrates how to use Apache Spark in Cloudera Data Engineering (CDE) to load an additional year of data (2008) into an Iceberg table. You will execute a Python script that reads data from a CSV file stored in AWS S3, filters the data for a specific year, and inserts it into the existing Iceberg table.
+This submodule demonstrates how to use Apache Spark in Cloudera Data Engineering (CDE) to load an additional year of data (2008) into an Iceberg table. You will execute a spark sql using CDE Sessions that reads data from a CSV file stored in AWS S3, filters the data for a specific year, and inserts it into the existing Iceberg table.
 
 The goal is to showcase Iceberg's multi-engine capabilities, specifically highlighting Spark for data manipulation and Impala for querying the results in Cloudera Data Warehouse (CDW/Hue).
 
@@ -16,6 +16,9 @@ Before running this submodule, ensure that:
 - You have installed an IDE or text editor (e.g., VS Code) to modify the Python script.
 
 ## Step-by-Step Guide
+Go to Cloudera Data Engineering and click on "New Session"
+<img width="1092" alt="image" src="https://github.com/user-attachments/assets/d67e60d8-4edf-4447-9472-790a6548a6d6">
+
 
 ### Step 1: Prepare the Spark Script
 
