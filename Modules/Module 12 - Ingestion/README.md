@@ -1,4 +1,4 @@
-# Module 13 - Ingestion
+# Module 12 - Ingestion
 
 ## Ingestion with Iceberg and NiFi
 
@@ -271,5 +271,3 @@ However, for this document we will start directly with NiFi (Flow Designer) for 
   - Other settings can remain default
 
 ![](../../images/create_cde_cluster.png)
-
-

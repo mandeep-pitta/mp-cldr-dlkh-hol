@@ -1,4 +1,4 @@
-# Module 16 - Table Maintenance
+# Module 11 - Table Maintenance
 
 # Iceberg Table Maintenance with Compaction, Rollback and Snapshot Expiration
 
@@ -13,19 +13,19 @@ The module utilizes a sample "flights" table within the `prefix` project for dem
 **Submodules:**
 
 - **Table maintenance manual compaction:** This section guides you through manually compacting the "flights" table to improve query performance. It includes:
-    
+
     - Script to load sample data (including a bad record).
     - Steps to identify the large number of small files generated.
     - Code to manually compact the table files into a single, larger file (500MB).
     - Instructions to clean up manifest files after compaction.
 - **Table maintenance with rollback:** This section demonstrates how to recover from bad data insertions using rollback functionality. It includes:
-    
+
     - Steps to identify a bad record (year 9999) in the "flights" table.
     - Instructions to view existing snapshots and pinpoint the one containing the bad data.
     - Code to rollback the table to the last known good state using the snapshot ID.
     - Verification steps to confirm the bad record has been removed.
 - **Table maintenance with snapshot expiration:** This section explains how to manage storage space by expiring old snapshots. It includes:
-    
+
     - Instructions to view existing snapshots in the "flights" table.
     - Code to expire all snapshots up to a specific point in time (be cautious as expired snapshots cannot be recovered for time travel queries).
     - Steps to verify that snapshots have been successfully removed.
