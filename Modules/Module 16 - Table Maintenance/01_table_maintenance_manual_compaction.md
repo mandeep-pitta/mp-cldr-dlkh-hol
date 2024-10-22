@@ -41,11 +41,11 @@
     spark.sql("SELECT file_path, file_size_in_bytes FROM " + table_name + ".files").show(100)
 
     ## Also should clean up Manifest files
-    spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM jing_airlines_maint.flights.manifests").show(100)
+    spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM " + table_name +".manifests").show(100)
 
     # Table Maintenance to Manually Compact files to size of 500MB
     #    Compact flights table files into fewer files
-    spark.sql("CALL spark_catalog.system.rewrite_manifests(table => 'jing_airlines_maint.flights')").show()
+    spark.sql("CALL spark_catalog.system.rewrite_manifests(table => table_name )").show()
 
     # After Compaction, see that there is only 1 file which is about 11MB that needs to be read in the same directory
     spark.sql("SELECT path, length, added_snapshot_id, added_data_files_count FROM jing_airlines_maint.flights.manifests").show(100)
