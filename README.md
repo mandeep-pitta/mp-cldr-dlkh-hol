@@ -1,3 +1,7 @@
+## Lab Resources
+S3 Bucket Parameter as : cdp-hms-hol-buk-3b158b2a/iceberg-hott
+
+
 ## Open Data Lakehouse Runbook
 
 This Open Data Lakehouse Runbook showcases the end-to-end capabilities of the Cloudera Data Platform (CDP) Open Data Lakehouse powered by Apache Iceberg. It guides you through a multi-functional data analytics process, covering:
