@@ -44,5 +44,5 @@ As always, remember to replace `${prefix}` with your actual user ID throughout t
 
 To continue, proceed to the submodule below:
 
-- `01` [Load an Additional Year of Data Using Spark SQL](load_additional_year_CDE_sessions.md)
-- `01` [Load an Additional Year of Data Using Spark SQL](load_additional_year_DE_job.md)
+- `01` [Load an Additional Year of Data Using Spark SQL - CDE Sessions](load_additional_year_CDE_sessions.md)
+- `02` [Load an Additional Year of Data Using Spark SQL - CDE Jobs](load_additional_year_DE_job.md)
