@@ -32,7 +32,7 @@ By the end of this module, you will be able to:
    - Filter the data for a specific year and insert it into the Iceberg table.
    - Use CDW/Hue (Impala) to verify that the data has been successfully loaded.
 
-   [Go to Submodule 01 - Load an Additional Year of Data Using Spark SQL](load_additional_year_DE.md)
+   [Go to Submodule 01 - Load an Additional Year of Data Using Spark SQL](Module%2005%20-%20Loading%20Data%20Multi-function%20Analytics/load_additional_year_CDE_sessions.md)
 
 ### Key Takeaways
 
@@ -44,4 +44,4 @@ As always, remember to replace `${prefix}` with your actual user ID throughout t
 
 To continue, proceed to the submodule below:
 
-- `01` [Load an Additional Year of Data Using Spark SQL](load_additional_year_DE.md)
+- `01` [Load an Additional Year of Data Using Spark SQL](Module%2005%20-%20Loading%20Data%20Multi-function%20Analytics/load_additional_year_CDE_sessions.md)
