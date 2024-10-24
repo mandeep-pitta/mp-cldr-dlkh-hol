@@ -1,6 +1,3 @@
-## Lab Resources
-S3 Bucket Parameter as : cdp-hms-hol-buk-3b158b2a/iceberg-hott
-
 
 ## Open Data Lakehouse Runbook
 
