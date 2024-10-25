@@ -1,17 +1,3 @@
-## Environment Access:
-Please connect to Lab Environment
-
-Environment URL: https://login.cdpworkshops.cloudera.com/auth/realms/field-marketing-amer/protocol/saml/clients/cdp-sso
-
-Username: user001 - user054
-Access Password:
-
-HUE run: Assets > SQL > cdw_hive_vw_setup.sql
-
-cdp_env_bucket
-cdp-hms-hol-buk-3b158b2a/iceberg-hott
-
-CDE Session use - Create your own session using Spark
 
 ## Open Data Lakehouse Runbook
 
