@@ -46,7 +46,7 @@ import cml.data_v1 as cmldata
 #SparkContext.setSystemProperty('spark.executor.cores', '1')
 #SparkContext.setSystemProperty('spark.executor.memory', '2g')
 
-CONNECTION_NAME = "cdp-axm-hol-aw-dl"
+CONNECTION_NAME = "cdp-acxiom-hol-aw-dl"
 conn = cmldata.get_connection(CONNECTION_NAME)
 spark = conn.get_spark_session()
 
