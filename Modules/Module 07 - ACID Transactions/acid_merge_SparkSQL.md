@@ -72,10 +72,7 @@ spark.sql("INSERT INTO "+ prefix +"_airlines.airlines SELECT * FROM "+ prefix +"
 spark.sql("SELECT * FROM "+ prefix +"_airlines.airlines WHERE code ='UA'").show()
 
 # ICEBERG ACID - Change row for UA (United Airlines) to reflect new name of Adrenaline Airways
-spark.sql('MERGE INTO ' + prefix + '_airlines.airlines s USING (SELECT t.code, "Adrenaline Airways" AS description FROM '+ prefix + '_airlines.airlines t WHERE t.code = "UA") source \
-ON s.code = source.code \
-WHEN MATCHED AND s.description <> source.description THEN UPDATE SET s.description = source.description \
- ')
+spark.sql('MERGE INTO ' + prefix + '_airlines.airlines s USING (SELECT t.code, "Adrenaline Airways" AS description FROM '+ prefix + '_airlines.airlines t  WHERE t.code = "UA") source ON s.code = source.code WHEN MATCHED AND s.description <> source.description THEN UPDATE SET s.description = source.description')
 
 
 ```
