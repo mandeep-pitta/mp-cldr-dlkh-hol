@@ -56,7 +56,7 @@ spark.sql(EXAMPLE_SQL_QUERY).show()
 
 ### Code to add
 # Replace <prefix> with your user ID in the following code
-prefix = "<prefix>"
+prefix = <prefix>
 
 
 # Query Raw Data Table
