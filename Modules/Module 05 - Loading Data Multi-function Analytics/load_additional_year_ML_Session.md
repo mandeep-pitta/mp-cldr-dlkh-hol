@@ -1,8 +1,10 @@
-# ACID Merge with Spark SQL in CML
+# Load an Additional Year of Data Using Spark AI/ML Session
 
 ## Overview
 
-In this submodule, we will demonstrate how to perform an ACID `MERGE` operation using Spark SQL in Cloudera Machine Learning (CML). This showcases Iceberg's multi-engine capabilities by running ACID transactions in a PySpark environment within CML.
+This submodule demonstrates how to use Apache Spark in Cloudera Data Engineering (CDE) to load an additional year of data (2008) into an Iceberg table. You will execute a Python script that reads data from a CSV file stored in AWS S3, filters the data for a specific year, and inserts it into the existing Iceberg table.
+
+The goal is to showcase Iceberg's multi-engine capabilities, specifically highlighting Spark for data manipulation and Impala for querying the results in Cloudera Data Warehouse (CDW/Hue).
 
 ## Step-by-Step Guide
 
@@ -14,7 +16,7 @@ In this submodule, we will demonstrate how to perform an ACID `MERGE` operation 
    - **Kernel**: Set to **Python 3.7**.
 
 2. In the left navigation, click **Files**, and then create a new file:
-   - **File Name**: `iceberg_acid.py`
+   - **File Name**: `IcebergAdd2008.py`
    - Check **Open in Editor**.
 
 	![Create File](../../images/66.png)
@@ -22,7 +24,7 @@ In this submodule, we will demonstrate how to perform an ACID `MERGE` operation 
 ### Step 2. Start a CML Session
 
 1. Start a new session in the Workbench:
-   - **Name**: `iceberg-acid-session`
+   - **Name**: `iceberg-Add2008-session`
    - Enable **Spark** and select **Spark 3.2.0**.
 
 	![Start Session](../../images/67.png)
@@ -31,12 +33,12 @@ In this submodule, we will demonstrate how to perform an ACID `MERGE` operation 
 
 	![Connection Snippet](../../images/69.png)
 
-### Step 3. Perform the ACID Merge
+### Step 3. Perform the Add Additional 2008 Year Data
 
 1. Copy and paste the following code into your Workbench Editor (replacing `${prefix}` with your user ID) to:
    - Create an Iceberg table.
    - Load data into the table.
-   - Perform an ACID `MERGE` to update a record.
+   - Perform add additional 2008 year data.
   
 ```
 import cml.data_v1 as cmldata
@@ -85,13 +87,26 @@ spark.sql('MERGE INTO ' + prefix + '_airlines.airlines s USING (SELECT t.code, "
 
 	![Session Output](../../images/72.png)
 
-## Summary
+### Step 4: Verify the Data in CDW/Hue
 
-In this submodule, you learned how to perform an ACID `MERGE` operation using Spark SQL in CML. You successfully created an Iceberg table, loaded data into it, and performed an ACID transaction to update records, showcasing Iceberg’s multi-engine and multi-function support.
+Once the Spark job completes, verify that the data has been added to the Iceberg table using Impala in CDW/Hue.
+
+1. In CDW/Hue, execute the following query to check the record count for the year 2008:
+   ```
+   SELECT year, count(*)
+   FROM ${prefix}_airlines.flights
+   GROUP BY year
+   ORDER BY year desc;
+   ```
+
+2. You should see the records for the year 2008 along with data for the previous years.
+
+   ![Query Results](../../images/64.png)
+
+## Conclusion
+
+This submodule demonstrated how to use Spark in Cloudera Data Engineering to load data into an Iceberg table. You have successfully inserted data for an additional year (2008) and verified the results using CDW/Hue. This process highlights Iceberg’s multi-engine capabilities, enabling both Spark-based data manipulation and Impala querying for analysis.
 
 ## Next Steps
 
-To continue your journey with Iceberg, consider exploring these related modules:
-
-- **[Module 08 - Schema Evolution](module_08.md)**: Learn how to adapt your Iceberg table schema as your data evolves, without breaking existing queries.
-- **[Module 09 - Security](module_09.md)**: Implement robust security measures to control access to your Iceberg tables and safeguard your data.
+Continue exploring more advanced functionality with Iceberg and Spark, or return to the main module for additional exercises and insights.
