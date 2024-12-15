@@ -91,7 +91,7 @@ TBLPROPERTIES ('format-version'='2','external.table.purge'='true')
 -- LOAD DATA INTO ICEBERG TABLE FORMAT STORED AS PARQUET
 INSERT INTO ${prefix}_airlines.flights_iceberg
  SELECT * FROM ${prefix}_airlines_csv.flights_csv
- WHERE year <= 2006;
+ WHERE year in (2005, 2006);
 
 
 -- [TABLE MAINTENANCE] CREATE FLIGHTS TABLE IN ICEBERG TABLE FORMAT STORED AS PARQUET
