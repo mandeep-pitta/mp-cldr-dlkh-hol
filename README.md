@@ -1,3 +1,7 @@
+## Environment Access 
+https://login.cdpworkshops.cloudera.com/auth/realms/marketing-workshop1/protocol/saml/clients/cdp-sso
+
+
 
 ## Open Data Lakehouse Runbook
 
