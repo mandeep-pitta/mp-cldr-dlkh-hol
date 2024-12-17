@@ -41,12 +41,26 @@ The goal is to showcase Iceberg's multi-engine capabilities, specifically highli
    - Perform add additional 2008 year data.
   
 ```
+#****************************************************************************
+# 
+#  ICEBERG (Multi-function Analytics) - LOAD DATA  into table created in CDW
+#
+#***************************************************************************/
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+import pyspark.sql.functions as F
 import cml.data_v1 as cmldata
+#---------------------------------------------------
+#               CREATE SPARK SESSION
+#---------------------------------------------------
 
-# Sample in-code customization of spark configurations
-#from pyspark import SparkContext
-#SparkContext.setSystemProperty('spark.executor.cores', '1')
-#SparkContext.setSystemProperty('spark.executor.memory', '2g')
+#-----------------------------------------------------------------------------------
+# LOAD DATA 1 YEAR (2008) FROM RAW DATA CSV FILES ON AWS S3 CLOUD STORAGE
+#          A  TABLE IS ALREADY CREATED ON TOP OF THE CSV FILE
+#          RUN INSERT INTO ICEBERG TABLE FROM THE RAW CSV TABLE
+#
+#-----------------------------------------------------------------------------------
+
 
 CONNECTION_NAME = "cdp-acxiom-hol-aw-dl"
 conn = cmldata.get_connection(CONNECTION_NAME)
@@ -58,24 +72,12 @@ spark.sql(EXAMPLE_SQL_QUERY).show()
 
 ### Code to add
 # Replace <prefix> with your user ID in the following code
-prefix = <prefix>
+prefix = "user094"
 
+print("JOB STARTED...")
+spark.sql("INSERT INTO " + prefix + "_airlines.flights SELECT * FROM " + prefix +"_airlines_csv.flights_csv WHERE year = 2008 ")
 
-# Query Raw Data Table
-spark.sql("SELECT * FROM "+ prefix +"_airlines_csv.airlines_csv limit 5").show()
-
-# Create Iceberg Table
-spark.sql("CREATE EXTERNAL TABLE "+ prefix +"_airlines.airlines (code string, description string) USING ICEBERG TBLPROPERTIES ('format-version' = '2')")
-
-# Load Data into Iceberg Table
-spark.sql("INSERT INTO "+ prefix +"_airlines.airlines SELECT * FROM "+ prefix +"_airlines_csv.airlines_csv")
-
-# Review Results to ensure record was updated
-spark.sql("SELECT * FROM "+ prefix +"_airlines.airlines WHERE code ='UA'").show()
-
-# ICEBERG ACID - Change row for UA (United Airlines) to reflect new name of Adrenaline Airways
-spark.sql('MERGE INTO ' + prefix + '_airlines.airlines s USING (SELECT t.code, "Adrenaline Airways" AS description FROM '+ prefix + '_airlines.airlines t  WHERE t.code = "UA") source ON s.code = source.code WHEN MATCHED AND s.description <> source.description THEN UPDATE SET s.description = source.description')
-
+print("JOB COMPLETED.\n\n")
 
 ```
 
