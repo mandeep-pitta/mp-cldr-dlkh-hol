@@ -39,13 +39,13 @@ To begin, select one of the sub-modules below:
 
 ## Submodules
 
-`01` [Load New Data](load_new_data_to_flights_DF.md)
+`01` [Load New Data](01 load_new_data_to_flights_DF.md)
 
-`02` [Change Data Capture with Debezium](change_data_capture_debezium_DF.md)
+`02` [Change Data Capture with Debezium](02 change_data_capture_debezium_DF.md)
 
-`03` [Change Data Capture with GoldenGate](change_data_capture_goldengate_DF.md)
+`03` [Change Data Capture with GoldenGate](03 change_data_capture_goldengate_DF.md)
 
-`04` [Custom Change Data Capture ](change_data_capture_custom_DF.md)
+`04` [Custom Change Data Capture ](04 change_data_capture_custom_DF.md)
 
 
 ------- ***HOLDING ONTO THE FOLLOWING IN CASE WE NEED THIS LATER*** --------
